@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payphone U.S. Regulatory & Licensing Roadmap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e1b4b;
+            --text: #374151;
+            --text-light: #6b7280;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, #312e81 100%);
+            color: white;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-nav {
+            margin-bottom: 2rem;
+        }
+
+        .header-nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .header-nav a:hover {
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .header-stat {
+            text-align: center;
+        }
+
+        .header-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .header-stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--white);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Sections */
+        .section {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Executive Summary Grid */
+        .exec-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .exec-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .exec-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .exec-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .exec-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        /* Federal Section */
+        .federal-card {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .federal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .federal-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .federal-title h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .federal-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .federal-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .federal-stat {
+            text-align: center;
+        }
+
+        .federal-stat-value {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .federal-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .requirements-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .requirements-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .requirements-list li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* State Cards Grid */
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .state-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .state-card.fastest {
+            border-top: 4px solid var(--secondary);
+        }
+
+        .state-card.moderate {
+            border-top: 4px solid var(--primary);
+        }
+
+        .state-card.longest {
+            border-top: 4px solid var(--warning);
+        }
+
+        .state-card.prohibited {
+            border-top: 4px solid var(--danger);
+            background: #fef2f2;
+        }
+
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .state-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .state-abbr {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .state-timeline {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .timeline-fast {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        .timeline-moderate {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .timeline-slow {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .timeline-prohibited {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .state-license {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .state-requirements {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .state-req-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .state-req-label {
+            color: var(--text-light);
+        }
+
+        .state-req-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .state-notes {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            padding: 0.75rem;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .state-notes.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--warning);
+        }
+
+        .state-notes.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        /* Timeline Section */
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-phases {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            position: relative;
+        }
+
+        .timeline-phases::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 12.5%;
+            right: 12.5%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary), var(--warning), var(--danger));
+            border-radius: 2px;
+        }
+
+        .timeline-phase {
+            text-align: center;
+            position: relative;
+        }
+
+        .phase-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+            border: 4px solid var(--white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .phase-dot.green { background: var(--secondary); }
+        .phase-dot.blue { background: var(--primary); }
+        .phase-dot.orange { background: var(--warning); }
+        .phase-dot.red { background: var(--danger); }
+
+        .phase-date {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .phase-items {
+            list-style: none;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-align: left;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .phase-items li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .phase-items li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Remittances Sponsor Section */
+        .sponsor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .sponsor-card {
+            padding: 2rem;
+        }
+
+        .sponsor-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sponsor-steps {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .sponsor-steps li {
+            counter-increment: step;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .sponsor-steps li::before {
+            content: counter(step);
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sponsor-benefits {
+            list-style: none;
+        }
+
+        .sponsor-benefits li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .sponsor-benefits li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Insurance Section */
+        .insurance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .insurance-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .insurance-features {
+            list-style: none;
+        }
+
+        .insurance-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.red {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .feature-icon.green {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        /* EWA Section */
+        .ewa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .ewa-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .ewa-states {
+            list-style: none;
+        }
+
+        .ewa-states li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* Action Items */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            padding: 1.5rem;
+        }
+
+        .action-card.immediate {
+            border-left: 4px solid var(--danger);
+        }
+
+        .action-card.short-term {
+            border-left: 4px solid var(--warning);
+        }
+
+        .action-card.decisions {
+            border-left: 4px solid var(--primary);
+        }
+
+        .action-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .action-list li::before {
+            content: '□';
+            color: var(--text-light);
+        }
+
+        /* Budget Section */
+        .budget-card {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .budget-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .budget-note {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .exec-grid { grid-template-columns: repeat(2, 1fr); }
+            .states-grid { grid-template-columns: repeat(2, 1fr); }
+            .timeline-phases { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .timeline-phases::before { display: none; }
+            .sponsor-grid { grid-template-columns: 1fr; }
+            .insurance-grid { grid-template-columns: 1fr; }
+            .ewa-grid { grid-template-columns: 1fr; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.75rem; }
+            .exec-grid { grid-template-columns: 1fr; }
+            .states-grid { grid-template-columns: 1fr; }
+            .requirements-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <nav class="header-nav">
+                <a href="index.html">← Back to Strategy Overview</a>
+            </nav>
+            <h1>Regulatory & Licensing Roadmap</h1>
+            <p>Micro Lending • Remittances • Assistance Plans • Insurance | Time to Market Analysis</p>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value">6</div>
+                    <div class="header-stat-label">Target States</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">4</div>
+                    <div class="header-stat-label">Product Lines</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">6-12</div>
+                    <div class="header-stat-label">Months to Full Launch</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">$50-100K</div>
+                    <div class="header-stat-label">Licensing Budget</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#summary" class="nav-link active">Executive Summary</a>
+            <a href="#federal" class="nav-link">Federal Requirements</a>
+            <a href="#lending" class="nav-link">Lending Licenses</a>
+            <a href="#remittances" class="nav-link">Remittances</a>
+            <a href="#insurance" class="nav-link">Insurance</a>
+            <a href="#ewa" class="nav-link">EWA Alternative</a>
+            <a href="#timeline" class="nav-link">Timeline</a>
+            <a href="#actions" class="nav-link">Next Steps</a>
+        </div>
+    </nav>
+
+    <!-- Executive Summary -->
+    <section class="section" id="summary">
+        <div class="section-header">
+            <div class="section-badge">Executive Summary</div>
+            <h2 class="section-title">Licensing Overview</h2>
+            <p class="section-description">Complete regulatory requirements for Payphone's U.S. market entry across all product lines.</p>
+        </div>
+
+        <div class="exec-grid">
+            <div class="card exec-card">
+                <div class="exec-icon">🏛️</div>
+                <div class="exec-value">TX • CA • FL • AZ • NJ • IL</div>
+                <div class="exec-label">Target States</div>
+            </div>
+            <div class="card exec-card">
+                <div class="exec-icon">📋</div>
+                <div class="exec-value">FinCEN MSB</div>
+                <div class="exec-label">Federal Registration (2 weeks)</div>
+            </div>
+            <div class="card exec-card">
+                <div class="exec-icon">💰</div>
+                <div class="exec-value">State Licenses</div>
+                <div class="exec-label">Consumer Finance in 5 States</div>
+            </div>
+            <div class="card exec-card">
+                <div class="exec-icon">🔄</div>
+                <div class="exec-value">MTL Sponsor</div>
+                <div class="exec-label">Remittances via Licensed Partner</div>
+            </div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(16, 185, 129, 0.05)); border: 1px solid rgba(99, 102, 241, 0.2);">
+            <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 1rem;">Products & Licensing Requirements</h3>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div style="padding: 1rem; background: white; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💵</div>
+                    <div style="font-weight: 600; color: var(--dark);">Micro Lending</div>
+                    <div style="font-size: 0.8rem; color: var(--text-light);">State consumer finance licenses in 5 states. AZ prohibits payday.</div>
+                </div>
+                <div style="padding: 1rem; background: white; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌎</div>
+                    <div style="font-weight: 600; color: var(--dark);">Remittances</div>
+                    <div style="font-size: 0.8rem; color: var(--text-light);">Using licensed MTL sponsor. Agent registration per state.</div>
+                </div>
+                <div style="padding: 1rem; background: white; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🛡️</div>
+                    <div style="font-weight: 600; color: var(--dark);">Assistance Plans</div>
+                    <div style="font-size: 0.8rem; color: var(--text-light);">Need insurance partner for certain benefits. Payphone as agent.</div>
+                </div>
+                <div style="padding: 1rem; background: white; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚗</div>
+                    <div style="font-weight: 600; color: var(--dark);">Auto Insurance</div>
+                    <div style="font-size: 0.8rem; color: var(--text-light);">Lead gen / referral model. Likely exempt from licensing.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Federal Requirements -->
+    <section class="section" id="federal">
+        <div class="section-header">
+            <div class="section-badge">Federal</div>
+            <h2 class="section-title">FinCEN MSB Registration</h2>
+            <p class="section-description">Required federal registration for all Money Services Businesses.</p>
+        </div>
+
+        <div class="card federal-card">
+            <div class="federal-header">
+                <div class="federal-title">
+                    <span style="font-size: 1.5rem;">🏛️</span>
+                    <h3>FinCEN MSB Registration</h3>
+                    <span class="federal-badge">REQUIRED</span>
+                </div>
+                <div class="federal-stats">
+                    <div class="federal-stat">
+                        <div class="federal-stat-value">2 Weeks</div>
+                        <div class="federal-stat-label">Processing</div>
+                    </div>
+                    <div class="federal-stat">
+                        <div class="federal-stat-value">180 Days</div>
+                        <div class="federal-stat-label">Deadline After Est.</div>
+                    </div>
+                    <div class="federal-stat">
+                        <div class="federal-stat-value">$0</div>
+                        <div class="federal-stat-label">Fee</div>
+                    </div>
+                    <div class="federal-stat">
+                        <div class="federal-stat-value">2 Years</div>
+                        <div class="federal-stat-label">Renewal</div>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="requirements-list">
+                <li>File FinCEN Form 107 via BSA E-Filing</li>
+                <li>Designate compliance officer</li>
+                <li>Implement written AML program</li>
+                <li>Maintain agent list (updated annually)</li>
+                <li>Retain records at US location for 5 years</li>
+                <li>Renew by Dec 31 every 2 years</li>
+            </ul>
+
+            <div class="state-notes warning" style="margin-top: 1.5rem;">
+                <strong>⚠️ Why Payphone Needs This:</strong> Even with a sponsor for remittances, Payphone's micro-lending product qualifies as an MSB. Penalty for non-compliance: Up to $5,000/day + criminal charges.
+            </div>
+        </div>
+    </section>
+
+    <!-- Lending Licenses -->
+    <section class="section" id="lending">
+        <div class="section-header">
+            <div class="section-badge">Lending</div>
+            <h2 class="section-title">State Lending License Requirements</h2>
+            <p class="section-description">Consumer finance licenses required for cash advance products in each target state.</p>
+        </div>
+
+        <div class="states-grid">
+            <!-- Texas -->
+            <div class="card state-card fastest">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">Texas</div>
+                        <div class="state-abbr">TX</div>
+                    </div>
+                    <span class="state-timeline timeline-fast">30 Days</span>
+                </div>
+                <div class="state-license">Credit Access Business (CAB) License</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">Net Worth</span>
+                        <span class="state-req-value">Varies</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Bond</span>
+                        <span class="state-req-value">Required</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Regulator</span>
+                        <span class="state-req-value">OCCC</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">System</span>
+                        <span class="state-req-value">ALECS</span>
+                    </div>
+                </div>
+                <div class="state-notes">
+                    <strong>CAB Model:</strong> Borrower signs note with third-party lender, separate credit service agreement with CAB. Texas does NOT use NMLS.
+                </div>
+                <div class="state-notes warning" style="margin-top: 0.5rem;">
+                    <strong>⚠️ Local Ordinances:</strong> 45+ Texas cities have stricter rules (20% income cap, max 4 installments).
+                </div>
+            </div>
+
+            <!-- Florida -->
+            <div class="card state-card moderate">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">Florida</div>
+                        <div class="state-abbr">FL</div>
+                    </div>
+                    <span class="state-timeline timeline-moderate">60-90 Days</span>
+                </div>
+                <div class="state-license">Consumer Finance Company License</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">Net Worth</span>
+                        <span class="state-req-value">$25,000</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Bond</span>
+                        <span class="state-req-value">$25,000</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">App Fee</span>
+                        <span class="state-req-value">$625</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Regulator</span>
+                        <span class="state-req-value">OFR</span>
+                    </div>
+                </div>
+                <div class="state-notes">
+                    Authorizes consumer loans ≤$25,000 at rates >18% APR. Apply via NMLS. Fingerprinting required for all control persons (10%+ ownership).
+                </div>
+            </div>
+
+            <!-- Illinois -->
+            <div class="card state-card moderate">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">Illinois</div>
+                        <div class="state-abbr">IL</div>
+                    </div>
+                    <span class="state-timeline timeline-moderate">60-90 Days</span>
+                </div>
+                <div class="state-license">Consumer Installment Loan Act (CILA)</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">Net Worth</span>
+                        <span class="state-req-value">Varies</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Bond</span>
+                        <span class="state-req-value">Required</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">System</span>
+                        <span class="state-req-value">NMLS</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Regulator</span>
+                        <span class="state-req-value">IDFPR</span>
+                    </div>
+                </div>
+                <div class="state-notes warning">
+                    <strong>⚠️ 36% APR Cap:</strong> Illinois Predatory Loan Prevention Act (2021) caps interest. Structure products accordingly.
+                </div>
+            </div>
+
+            <!-- New Jersey -->
+            <div class="card state-card moderate">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">New Jersey</div>
+                        <div class="state-abbr">NJ</div>
+                    </div>
+                    <span class="state-timeline timeline-moderate">60-120 Days</span>
+                </div>
+                <div class="state-license">Consumer Lender License</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">Net Worth</span>
+                        <span class="state-req-value">Varies</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Bond</span>
+                        <span class="state-req-value">Required</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Fingerprint</span>
+                        <span class="state-req-value">LiveScan</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Regulator</span>
+                        <span class="state-req-value">NJ DOBI</span>
+                    </div>
+                </div>
+                <div class="state-notes">
+                    Loans ≤$50,000 for personal use. All officers, directors, 10%+ owners require fingerprinting. Biennial license renewal.
+                </div>
+            </div>
+
+            <!-- California -->
+            <div class="card state-card longest">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">California</div>
+                        <div class="state-abbr">CA</div>
+                    </div>
+                    <span class="state-timeline timeline-slow">6-9 Months</span>
+                </div>
+                <div class="state-license">California Financing Law (CFL) License</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">Net Worth</span>
+                        <span class="state-req-value">$250,000</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Bond</span>
+                        <span class="state-req-value">$25K+</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">System</span>
+                        <span class="state-req-value">NMLS</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Regulator</span>
+                        <span class="state-req-value">DFPI</span>
+                    </div>
+                </div>
+                <div class="state-notes warning">
+                    <strong>⚠️ CRITICAL PATH:</strong> California CFL is the longest timeline (6-9 months). START FIRST! Alternative: EWA Registration path is simpler if structured as earned wage access.
+                </div>
+            </div>
+
+            <!-- Arizona -->
+            <div class="card state-card prohibited">
+                <div class="state-header">
+                    <div>
+                        <div class="state-name">Arizona</div>
+                        <div class="state-abbr">AZ</div>
+                    </div>
+                    <span class="state-timeline timeline-prohibited">PROHIBITED</span>
+                </div>
+                <div class="state-license">Payday Lending Illegal Since 2010</div>
+                <div class="state-requirements">
+                    <div class="state-req-item">
+                        <span class="state-req-label">APR Cap</span>
+                        <span class="state-req-value">36%</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Limit</span>
+                        <span class="state-req-value">≤$3,000</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Status</span>
+                        <span class="state-req-value">Banned</span>
+                    </div>
+                    <div class="state-req-item">
+                        <span class="state-req-label">Since</span>
+                        <span class="state-req-value">2010</span>
+                    </div>
+                </div>
+                <div class="state-notes danger">
+                    <strong>🚫 Options:</strong> (1) Exclude Arizona from cash advance, (2) Structure as true EWA product, (3) Offer remittances and assistance plans only in AZ.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Remittances -->
+    <section class="section" id="remittances">
+        <div class="section-header">
+            <div class="section-badge">Remittances</div>
+            <h2 class="section-title">Licensed Money Transmitter Sponsor Model</h2>
+            <p class="section-description">Faster time-to-market by operating under an existing MTL holder's licenses.</p>
+        </div>
+
+        <div class="sponsor-grid">
+            <div class="card sponsor-card">
+                <h3>🔄 How Sponsor Model Works</h3>
+                <ol class="sponsor-steps">
+                    <li>Licensed MTL holds state licenses in all target states</li>
+                    <li>Payphone becomes authorized agent under sponsor</li>
+                    <li>Transactions flow through sponsor's licensed entity</li>
+                    <li>Sponsor handles regulatory compliance & reporting</li>
+                    <li>Payphone focuses on customer experience & growth</li>
+                </ol>
+            </div>
+
+            <div class="card sponsor-card">
+                <h3>✅ Benefits & Requirements</h3>
+                <ul class="sponsor-benefits">
+                    <li>Faster time-to-market (weeks vs. months)</li>
+                    <li>Lower capital requirements</li>
+                    <li>Reduced compliance burden</li>
+                    <li>Immediate access to all 50 states</li>
+                </ul>
+                <div class="state-notes" style="margin-top: 1rem;">
+                    <strong>What Payphone Still Needs:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+                        <li>Agent Registration (sponsor typically handles)</li>
+                        <li>Own AML/BSA Compliance Program</li>
+                        <li>Written policies, compliance officer, training</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem; border-left: 4px solid var(--warning);">
+            <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 1rem;">⚠️ Due Diligence & Economics</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <strong>Verify Sponsor Licenses:</strong>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">Confirm sponsor holds active licenses in ALL target states: TX, CA, FL, AZ, NJ, IL. Check NMLS Consumer Access.</p>
+                </div>
+                <div>
+                    <strong>Revenue Share:</strong>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">Sponsors typically take 15-30% of transaction fees. Factor into unit economics and pricing strategy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insurance -->
+    <section class="section" id="insurance">
+        <div class="section-header">
+            <div class="section-badge">Insurance</div>
+            <h2 class="section-title">Assistance Plans & Insurance Products</h2>
+            <p class="section-description">Some assistance plan features require insurance licensing; auto insurance referrals are likely exempt.</p>
+        </div>
+
+        <div class="insurance-grid">
+            <div class="card">
+                <h3>🛡️ Assistance Plans Classification</h3>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Some features may constitute INSURANCE under state law. NY ruled funeral repatriation = insurance.</p>
+
+                <ul class="insurance-features">
+                    <li>
+                        <span class="feature-icon red">🔴</span>
+                        <div>
+                            <strong>Funeral Repatriation ($10K)</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Insurance - Requires licensed partner</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon red">🔴</span>
+                        <div>
+                            <strong>Funeral Assistance</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Insurance - Requires licensed partner</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon red">🔴</span>
+                        <div>
+                            <strong>Family Remittance Support</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Insurance - Death benefit triggers</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon green">🟢</span>
+                        <div>
+                            <strong>Telehealth Sessions</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Service contract - No insurance license</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon green">🟢</span>
+                        <div>
+                            <strong>Rx Discounts</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-light);">Service contract - No insurance license</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="state-notes" style="margin-top: 1rem;">
+                    <strong>✓ Solution:</strong> Partner with licensed insurer (e.g., Continental/CONTINAS). Payphone acts as agent, not carrier.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🚗 Auto Insurance (Referral Model)</h3>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Lead generation / referral model is LIKELY EXEMPT from insurance licensing.</p>
+
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="font-weight: 600; color: var(--dark); margin-bottom: 1rem;">Insurify Partnership Model</h4>
+                    <ul style="list-style: none; font-size: 0.9rem;">
+                        <li style="margin-bottom: 0.5rem;">💵 <strong>$6 per qualified lead</strong> (CPL)</li>
+                        <li style="margin-bottom: 0.5rem;">📊 <strong>80% ad revenue share</strong></li>
+                        <li style="margin-bottom: 0.5rem;">✓ Insurify handles actual insurance sales</li>
+                        <li>✓ Payphone = marketing/referral partner only</li>
+                    </ul>
+                </div>
+
+                <div class="state-notes">
+                    <strong>🔍 Due Diligence Checklist:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+                        <li>□ Verify insurance partner's licenses</li>
+                        <li>□ Confirm states where plans can be sold</li>
+                        <li>□ Get referral agreement in writing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EWA Alternative -->
+    <section class="section" id="ewa">
+        <div class="section-header">
+            <div class="section-badge">Alternative Path</div>
+            <h2 class="section-title">Earned Wage Access (EWA) Alternative</h2>
+            <p class="section-description">Many states classify EWA differently than payday loans, offering a simpler regulatory path.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--secondary);">
+            <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 1rem;">💡 What is Earned Wage Access?</h3>
+            <p style="color: var(--text-light); margin-bottom: 1rem;">EWA allows workers to access earned (but unpaid) wages before payday. Unlike payday loans, it's tied to hours already worked. Many states classify EWA differently, offering a simpler regulatory path.</p>
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 10px;">
+                <strong style="color: var(--secondary);">If Payphone structures as true EWA:</strong>
+                <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.9rem; color: var(--text);">
+                    <li>✓ Simplify AZ compliance (not a loan)</li>
+                    <li>✓ Faster CA path (EWA registration vs. CFL)</li>
+                    <li>✓ Less capital required</li>
+                    <li>✓ Better regulatory optics</li>
+                </ul>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-light);"><strong>Trade-off:</strong> Requires employer/payroll integration</p>
+            </div>
+        </div>
+
+        <div class="ewa-grid">
+            <div class="card">
+                <h4 style="color: var(--secondary);">✓ EWA-Friendly States (Not Loans)</h4>
+                <ul class="ewa-states">
+                    <li><span style="color: var(--secondary);">✓</span> Nevada - First EWA licensing (July 2024)</li>
+                    <li><span style="color: var(--secondary);">✓</span> Missouri - Registration only</li>
+                    <li><span style="color: var(--secondary);">✓</span> Kansas - Registration required (July 2024)</li>
+                    <li><span style="color: var(--secondary);">✓</span> Wisconsin - Licensed but not loan</li>
+                    <li><span style="color: var(--secondary);">✓</span> South Carolina - Registration</li>
+                    <li><span style="color: var(--secondary);">✓</span> Utah - Effective May 2025</li>
+                    <li><span style="color: var(--secondary);">✓</span> Indiana - Effective Jan 2026</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4 style="color: var(--warning);">⚠️ States Treating EWA as Loans</h4>
+                <ul class="ewa-states">
+                    <li><span style="color: var(--warning);">⚠️</span> California - EWA = loans, but exempt if registered by Feb 2025</li>
+                    <li><span style="color: var(--warning);">⚠️</span> Connecticut - Subject to usury caps</li>
+                    <li><span style="color: var(--warning);">⚠️</span> Maryland - New law treats EWA as loans</li>
+                </ul>
+            </div>
+
+            <div class="card" style="background: rgba(99, 102, 241, 0.05);">
+                <h4 style="color: var(--primary);">🎯 Key Decision Point</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">Product Structure Choice:</p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="padding: 0.75rem; background: white; border-radius: 8px; font-size: 0.85rem;">
+                        <strong>Option A: Traditional Payday</strong><br>
+                        <span style="color: var(--text-light);">Full state licensing, exclude AZ</span>
+                    </div>
+                    <div style="padding: 0.75rem; background: white; border-radius: 8px; font-size: 0.85rem;">
+                        <strong>Option B: True EWA</strong><br>
+                        <span style="color: var(--text-light);">Simpler path, needs payroll integration</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="section" id="timeline" style="background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%); max-width: 100%; padding: 3rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <div class="section-badge">Implementation</div>
+                <h2 class="section-title">Implementation Timeline</h2>
+                <p class="section-description">Phased approach to licensing and product launch across all target states.</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-phases">
+                    <div class="timeline-phase">
+                        <div class="phase-dot green"></div>
+                        <div class="phase-date">NOW - Q4 2025</div>
+                        <div class="phase-title">Phase 1: Foundation</div>
+                        <ul class="phase-items">
+                            <li>FinCEN MSB Registration</li>
+                            <li>Texas CAB Application</li>
+                            <li>Florida CF Application</li>
+                            <li>Illinois CILA Application</li>
+                            <li>California CFL Started</li>
+                            <li>MTL Sponsor Agreement</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-dot blue"></div>
+                        <div class="phase-date">Q1 2026</div>
+                        <div class="phase-title">Phase 2: First Approvals</div>
+                        <ul class="phase-items">
+                            <li>✓ Texas Approved</li>
+                            <li>✓ Florida Approved</li>
+                            <li>✓ Illinois Approved</li>
+                            <li>New Jersey Application</li>
+                            <li>CA CFL In Progress</li>
+                            <li>Remittances Live (all states)</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-dot orange"></div>
+                        <div class="phase-date">Q2 2026</div>
+                        <div class="phase-title">Phase 3: Expansion</div>
+                        <ul class="phase-items">
+                            <li>✓ NJ Approved</li>
+                            <li>Launch Lending: TX, FL, IL</li>
+                            <li>Remittances scaling</li>
+                            <li>CA CFL In Progress</li>
+                            <li>Insurance partner finalized</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-dot red"></div>
+                        <div class="phase-date">Q3 2026</div>
+                        <div class="phase-title">Phase 4: Full Launch</div>
+                        <ul class="phase-items">
+                            <li>✓ California Approved</li>
+                            <li>Launch Lending: CA, NJ</li>
+                            <li>Assistance Plans Live</li>
+                            <li>Auto Insurance Referrals</li>
+                            <li>Full Product Suite</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem; border-left: 4px solid var(--danger);">
+                <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 0.5rem;">⚡ CRITICAL PATH</h3>
+                <p style="color: var(--text-light);">California CFL (6-9 months) is the longest item — <strong>START FIRST!</strong> Arizona decision needed: exclude state or pursue EWA structure?</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="section" id="actions">
+        <div class="section-header">
+            <div class="section-badge">Action Items</div>
+            <h2 class="section-title">Next Steps & Action Items</h2>
+            <p class="section-description">Prioritized checklist for regulatory compliance and market entry.</p>
+        </div>
+
+        <div class="action-grid">
+            <div class="card action-card immediate">
+                <h4>🔴 Immediate (This Week)</h4>
+                <ul class="action-list">
+                    <li>File FinCEN MSB Registration</li>
+                    <li>Engage compliance counsel</li>
+                    <li>Begin California CFL prep</li>
+                    <li>Make Arizona strategy decision</li>
+                    <li>Verify MTL sponsor licenses</li>
+                    <li>Identify insurance partner</li>
+                </ul>
+            </div>
+
+            <div class="card action-card short-term">
+                <h4>🟠 Short-Term (30 Days)</h4>
+                <ul class="action-list">
+                    <li>Submit Texas CAB (ALECS)</li>
+                    <li>Submit Florida CF (NMLS)</li>
+                    <li>Submit Illinois CILA</li>
+                    <li>Obtain surety bonds</li>
+                    <li>Schedule fingerprinting</li>
+                    <li>Draft AML program</li>
+                </ul>
+            </div>
+
+            <div class="card action-card decisions">
+                <h4>💡 Key Decisions Required</h4>
+                <ul class="action-list">
+                    <li><strong>Product Structure:</strong> Payday vs EWA?</li>
+                    <li><strong>Arizona Strategy:</strong> Exclude or restructure?</li>
+                    <li><strong>Insurance Partner:</strong> Validate options</li>
+                    <li><strong>MTL Sponsor:</strong> Select and negotiate</li>
+                    <li><strong>Pricing Model:</strong> Factor sponsor fees</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="budget-card" style="margin-top: 2rem;">
+            <h3>💰 Estimated Licensing Budget</h3>
+            <div class="budget-amount">$50K - $100K</div>
+            <div class="budget-note">Application fees, surety bonds, legal counsel, and compliance setup across all states</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Payphone U.S. Regulatory & Licensing Roadmap | December 2025 | Confidential</p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">Building financial services for our community, one license at a time.</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update active nav on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
