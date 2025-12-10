@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payphone U.S. Market Penetration Strategy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e1b4b;
+            --text: #374151;
+            --text-light: #6b7280;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: var(--primary);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .header-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .header-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--white);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 700px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Market Overview */
+        .market-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .chart-container {
+            height: 350px;
+            position: relative;
+        }
+
+        .market-insights {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .insight-card.secondary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+        }
+
+        .insight-card.accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+        }
+
+        .insight-value {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .insight-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Phases */
+        .phases-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .phase-card {
+            position: relative;
+            padding-top: 3rem;
+        }
+
+        .phase-number {
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .phase-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-timeline {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .phase-list {
+            list-style: none;
+        }
+
+        .phase-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .phase-list li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Target Segments */
+        .segments-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .segment-card {
+            text-align: center;
+        }
+
+        .segment-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        .segment-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .segment-size {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .segment-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Competitive Analysis */
+        .competitive-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .competitive-table th {
+            background: var(--dark);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .competitive-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .competitive-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .competitive-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .competitive-table tr:last-child td:first-child {
+            border-radius: 0 0 0 12px;
+        }
+
+        .competitive-table tr:last-child td:last-child {
+            border-radius: 0 0 12px 0;
+        }
+
+        .competitive-table tr:hover {
+            background: var(--bg);
+        }
+
+        .highlight-row {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .highlight-row td {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .check { color: var(--secondary); }
+        .cross { color: #ef4444; }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .strategy-card {
+            border-left: 4px solid var(--primary);
+        }
+
+        .strategy-card.green { border-left-color: var(--secondary); }
+        .strategy-card.orange { border-left-color: var(--accent); }
+        .strategy-card.purple { border-left-color: #8b5cf6; }
+
+        .strategy-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .strategy-card h3 span {
+            font-size: 1.5rem;
+        }
+
+        .strategy-card p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .strategy-points {
+            list-style: none;
+        }
+
+        .strategy-points li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .strategy-points li::before {
+            content: '→';
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Financial Projections */
+        .projections-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .projection-card {
+            text-align: center;
+        }
+
+        .projection-card h4 {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .projection-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .projection-growth {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Risk Assessment */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .risk-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .risk-level {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .risk-high { background: #ef4444; }
+        .risk-medium { background: var(--accent); }
+        .risk-low { background: var(--secondary); }
+
+        .risk-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .risk-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .cta-stat {
+            text-align: center;
+        }
+
+        .cta-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .cta-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .header-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phases-container {
+                grid-template-columns: 1fr;
+            }
+
+            .segments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .competitive-table {
+                font-size: 0.85rem;
+            }
+
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-badge">📱 Strategic Market Analysis</div>
+            <h1>Payphone U.S. Market Penetration Strategy</h1>
+            <p>A comprehensive roadmap for expanding Ecuador's leading mobile payment platform into the $170B U.S.-Latin America remittance corridor.</p>
+
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value">$170B</div>
+                    <div class="header-stat-label">U.S.-LAC Remittances (2024)</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">80%</div>
+                    <div class="header-stat-label">Flows from U.S.</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">$4.8B</div>
+                    <div class="header-stat-label">Ecuador Corridor</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value">12%</div>
+                    <div class="header-stat-label">Market CAGR</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#market" class="nav-link active">Market Overview</a>
+            <a href="#opportunity" class="nav-link">Opportunity</a>
+            <a href="#strategy" class="nav-link">Strategy</a>
+            <a href="#phases" class="nav-link">Execution Phases</a>
+            <a href="#competitive" class="nav-link">Competition</a>
+            <a href="#financials" class="nav-link">Financials</a>
+            <a href="#risks" class="nav-link">Risks</a>
+        </div>
+    </nav>
+
+    <!-- Market Overview -->
+    <section class="section" id="market">
+        <div class="section-header">
+            <div class="section-badge">Market Analysis</div>
+            <h2 class="section-title">The U.S. Remittance Opportunity</h2>
+            <p class="section-description">The United States is the world's largest source of outward remittances, sending $80-90 billion annually with 80% flowing to Latin America and the Caribbean.</p>
+        </div>
+
+        <div class="market-grid">
+            <div class="card">
+                <h3 style="font-weight: 700; margin-bottom: 1.5rem; color: var(--dark);">U.S.-LAC Remittance Growth</h3>
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+
+            <div class="market-insights">
+                <div class="insight-card">
+                    <div class="insight-value">$165B</div>
+                    <div class="insight-label">Total LAC Remittances 2024</div>
+                </div>
+                <div class="insight-card secondary">
+                    <div class="insight-value">4.3%</div>
+                    <div class="insight-label">3-Year CAGR Growth</div>
+                </div>
+                <div class="insight-card accent">
+                    <div class="insight-value">10%</div>
+                    <div class="insight-label">Ecuador YoY Growth</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Segments -->
+    <section class="section" id="opportunity">
+        <div class="section-header">
+            <div class="section-badge">Target Market</div>
+            <h2 class="section-title">Primary Customer Segments</h2>
+            <p class="section-description">Focus on underserved segments where Payphone's unique value proposition creates competitive advantage.</p>
+        </div>
+
+        <div class="segments-grid">
+            <div class="card segment-card">
+                <div class="segment-icon">🇪🇨</div>
+                <h3>Ecuadorian Diaspora</h3>
+                <div class="segment-size">~700,000 in U.S.</div>
+                <p>Primary beachhead market. High brand recognition from Ecuador operations. Average remittance: $350/month.</p>
+            </div>
+            <div class="card segment-card">
+                <div class="segment-icon">🌎</div>
+                <h3>Pan-Latino Migrants</h3>
+                <div class="segment-size">62M+ Hispanic Population</div>
+                <p>Expand to Colombia, Peru, Central America corridors. Leverage existing payment infrastructure.</p>
+            </div>
+            <div class="card segment-card">
+                <div class="segment-icon">💼</div>
+                <h3>Small Business Owners</h3>
+                <div class="segment-size">4.7M Latino-Owned Businesses</div>
+                <p>Cross-sell TAP payment acceptance to merchants who also send remittances.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy -->
+    <section class="section" id="strategy">
+        <div class="section-header">
+            <div class="section-badge">Go-to-Market</div>
+            <h2 class="section-title">Strategic Pillars</h2>
+            <p class="section-description">Four key strategies to capture U.S. market share while leveraging Payphone's existing strengths.</p>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="card strategy-card">
+                <h3><span>🎯</span> Corridor-First Expansion</h3>
+                <p>Start with Ecuador corridor where brand equity exists, then expand to adjacent markets.</p>
+                <ul class="strategy-points">
+                    <li>Launch U.S.-Ecuador corridor first (Q1)</li>
+                    <li>Add Colombia, Peru corridors (Q2-Q3)</li>
+                    <li>Central America expansion (Q4)</li>
+                    <li>Partner with Ecuadorian associations</li>
+                </ul>
+            </div>
+
+            <div class="card strategy-card green">
+                <h3><span>💰</span> Aggressive Pricing</h3>
+                <p>Undercut competitors with transparent, low-cost pricing structure.</p>
+                <ul class="strategy-points">
+                    <li>$0 transfer fees for first 3 months</li>
+                    <li>Flat $2.99 fee vs. competitors' 5%+</li>
+                    <li>Best-in-class exchange rates</li>
+                    <li>No hidden fees guarantee</li>
+                </ul>
+            </div>
+
+            <div class="card strategy-card orange">
+                <h3><span>📱</span> Super-App Strategy</h3>
+                <p>Differentiate by offering more than just remittances.</p>
+                <ul class="strategy-points">
+                    <li>Remittances + TAP payments in one app</li>
+                    <li>U.S. debit card for recipients</li>
+                    <li>Bill pay & mobile top-ups</li>
+                    <li>Crypto on/off ramps (future)</li>
+                </ul>
+            </div>
+
+            <div class="card strategy-card purple">
+                <h3><span>🤝</span> Community-Led Growth</h3>
+                <p>Build trust through authentic community engagement.</p>
+                <ul class="strategy-points">
+                    <li>Ecuadorian community events sponsorship</li>
+                    <li>Referral program ($10 per referral)</li>
+                    <li>Ambassador program in key cities</li>
+                    <li>Spanish-first customer support</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Execution Phases -->
+    <section class="section" id="phases">
+        <div class="section-header">
+            <div class="section-badge">Execution Roadmap</div>
+            <h2 class="section-title">Three-Phase Market Entry</h2>
+            <p class="section-description">Systematic approach to building sustainable market presence over 18-24 months.</p>
+        </div>
+
+        <div class="phases-container">
+            <div class="card phase-card">
+                <div class="phase-number">1</div>
+                <h3>Foundation</h3>
+                <div class="phase-timeline">Months 1-6</div>
+                <ul class="phase-list">
+                    <li>Obtain MTL licenses (priority states)</li>
+                    <li>Partner with U.S. banking sponsor</li>
+                    <li>Build compliance infrastructure</li>
+                    <li>Launch beta in Miami & NYC</li>
+                    <li>Establish customer support center</li>
+                    <li>Initial marketing to Ecuadorians</li>
+                </ul>
+            </div>
+
+            <div class="card phase-card">
+                <div class="phase-number">2</div>
+                <h3>Acceleration</h3>
+                <div class="phase-timeline">Months 7-12</div>
+                <ul class="phase-list">
+                    <li>Expand to 10 additional states</li>
+                    <li>Launch Colombia & Peru corridors</li>
+                    <li>Introduce TAP payments for U.S. merchants</li>
+                    <li>Scale marketing spend</li>
+                    <li>Achieve 50K active users</li>
+                    <li>Build strategic partnerships</li>
+                </ul>
+            </div>
+
+            <div class="card phase-card">
+                <div class="phase-number">3</div>
+                <h3>Scale</h3>
+                <div class="phase-timeline">Months 13-24</div>
+                <ul class="phase-list">
+                    <li>Nationwide availability (all 50 states)</li>
+                    <li>Add Central America corridors</li>
+                    <li>Launch U.S. debit card product</li>
+                    <li>B2B payroll remittance product</li>
+                    <li>Target 200K+ active users</li>
+                    <li>Prepare for Series A funding</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive Analysis -->
+    <section class="section" id="competitive">
+        <div class="section-header">
+            <div class="section-badge">Competition</div>
+            <h2 class="section-title">Competitive Landscape</h2>
+            <p class="section-description">Eight companies control 70%+ of U.S.-LAC remittances. Payphone can differentiate through pricing and ecosystem.</p>
+        </div>
+
+        <div class="card">
+            <table class="competitive-table">
+                <thead>
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Market Share</th>
+                        <th>Avg Fee</th>
+                        <th>Speed</th>
+                        <th>Mobile App</th>
+                        <th>Payments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Remitly</strong></td>
+                        <td>23%</td>
+                        <td>$3.99-$4.99</td>
+                        <td>Minutes</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Western Union</strong></td>
+                        <td>18%</td>
+                        <td>$5-$10</td>
+                        <td>Minutes-Days</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Xoom (PayPal)</strong></td>
+                        <td>12%</td>
+                        <td>$0-$4.99</td>
+                        <td>Minutes</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MoneyGram</strong></td>
+                        <td>10%</td>
+                        <td>$4-$8</td>
+                        <td>Minutes-Days</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wise</strong></td>
+                        <td>5%</td>
+                        <td>0.5-1%</td>
+                        <td>Hours-Days</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>Payphone</strong></td>
+                        <td>Target: 2%</td>
+                        <td>$2.99 flat</td>
+                        <td>Minutes</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 1rem;">Payphone's Competitive Advantages</h3>
+            <div class="risk-grid">
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">✓ Super-App Ecosystem</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Only player offering remittances + merchant payments in one app</p>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">✓ Ecuador Market Leader</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Strong brand recognition in target corridor</p>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">✓ Lower Cost Structure</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Digital-first operations enable aggressive pricing</p>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">✓ Instant Settlement</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Funds arrive immediately to recipient wallets</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Projections -->
+    <section class="section" id="financials">
+        <div class="section-header">
+            <div class="section-badge">Financials</div>
+            <h2 class="section-title">Financial Projections</h2>
+            <p class="section-description">Conservative projections based on capturing 2% of Ecuador corridor and 0.5% of broader LAC market by Year 3.</p>
+        </div>
+
+        <div class="card">
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="projections-grid" style="margin-top: 2rem;">
+            <div class="card projection-card">
+                <h4>Year 1 Target Users</h4>
+                <div class="projection-value">75K</div>
+                <div class="projection-growth">↑ New Market</div>
+            </div>
+            <div class="card projection-card">
+                <h4>Year 1 Transaction Volume</h4>
+                <div class="projection-value">$180M</div>
+                <div class="projection-growth">↑ ~$200/user/mo</div>
+            </div>
+            <div class="card projection-card">
+                <h4>Year 3 Target Users</h4>
+                <div class="projection-value">350K</div>
+                <div class="projection-growth">↑ 367% Growth</div>
+            </div>
+            <div class="card projection-card">
+                <h4>Year 3 Transaction Volume</h4>
+                <div class="projection-value">$1.2B</div>
+                <div class="projection-growth">↑ 567% Growth</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h3 style="font-weight: 700; color: var(--dark); margin-bottom: 1.5rem;">Investment Requirements</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Seed Round: $2-3M</div>
+                    <h4>U.S. Market Entry</h4>
+                    <p>Licensing, compliance infrastructure, banking partnerships, initial marketing, team expansion (15-20 FTEs)</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Series A: $8-12M</div>
+                    <h4>Market Acceleration</h4>
+                    <p>Nationwide expansion, product development, aggressive customer acquisition, team scaling (50+ FTEs)</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Series B: $25-40M</div>
+                    <h4>Category Leadership</h4>
+                    <p>Pan-LAC expansion, B2B products, potential acquisitions, path to profitability</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment -->
+    <section class="section" id="risks">
+        <div class="section-header">
+            <div class="section-badge">Risk Analysis</div>
+            <h2 class="section-title">Key Risks & Mitigations</h2>
+            <p class="section-description">Proactive identification and management of market entry risks.</p>
+        </div>
+
+        <div class="risk-grid">
+            <div class="card risk-card">
+                <div class="risk-level risk-high"></div>
+                <div>
+                    <h4>Regulatory Complexity</h4>
+                    <p>MTL licensing in 50 states is expensive and time-consuming. <strong>Mitigation:</strong> Partner with licensed sponsor bank; prioritize high-volume states first.</p>
+                </div>
+            </div>
+            <div class="card risk-card">
+                <div class="risk-level risk-high"></div>
+                <div>
+                    <h4>Competitive Response</h4>
+                    <p>Incumbents may match pricing or acquire competitors. <strong>Mitigation:</strong> Build ecosystem moat with super-app strategy; focus on community loyalty.</p>
+                </div>
+            </div>
+            <div class="card risk-card">
+                <div class="risk-level risk-medium"></div>
+                <div>
+                    <h4>Compliance & AML</h4>
+                    <p>U.S. AML/KYC requirements are stringent. <strong>Mitigation:</strong> Invest in robust compliance tech; hire experienced compliance team.</p>
+                </div>
+            </div>
+            <div class="card risk-card">
+                <div class="risk-level risk-medium"></div>
+                <div>
+                    <h4>Customer Acquisition Cost</h4>
+                    <p>CAC in competitive market may exceed projections. <strong>Mitigation:</strong> Community-led growth; referral programs; leverage Ecuador brand.</p>
+                </div>
+            </div>
+            <div class="card risk-card">
+                <div class="risk-level risk-medium"></div>
+                <div>
+                    <h4>FX Rate Volatility</h4>
+                    <p>Currency fluctuations impact margins. <strong>Mitigation:</strong> Hedging strategies; real-time pricing; Ecuador uses USD (no FX risk).</p>
+                </div>
+            </div>
+            <div class="card risk-card">
+                <div class="risk-level risk-low"></div>
+                <div>
+                    <h4>Technology Scalability</h4>
+                    <p>Platform must handle U.S. volume. <strong>Mitigation:</strong> Cloud infrastructure; proven tech stack from Ecuador operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Capture the U.S. Market?</h2>
+        <p>Payphone has the brand, technology, and ecosystem to become a leading player in the $170B U.S.-LAC remittance market.</p>
+
+        <div class="cta-stats">
+            <div class="cta-stat">
+                <div class="cta-stat-value">$1.2B</div>
+                <div class="cta-stat-label">Year 3 Volume Target</div>
+            </div>
+            <div class="cta-stat">
+                <div class="cta-stat-value">350K</div>
+                <div class="cta-stat-label">Users by Year 3</div>
+            </div>
+            <div class="cta-stat">
+                <div class="cta-stat-value">2%</div>
+                <div class="cta-stat-label">Target Market Share</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Payphone U.S. Market Strategy | Prepared December 2024 | Confidential</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Data sources: Inter-American Dialogue, World Bank, IDB, Statista, Custom Market Insights</p>
+    </footer>
+
+    <script>
+        // Market Growth Chart
+        const marketCtx = document.getElementById('marketChart').getContext('2d');
+        new Chart(marketCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024', '2025 (P)'],
+                datasets: [{
+                    label: 'U.S.-LAC Remittances ($B)',
+                    data: [103, 128, 145, 158, 170, 180],
+                    backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                    borderColor: '#6366f1',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value + 'B';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Revenue Projection Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Q1 Y1', 'Q2 Y1', 'Q3 Y1', 'Q4 Y1', 'Q1 Y2', 'Q2 Y2', 'Q3 Y2', 'Q4 Y2', 'Q1 Y3', 'Q2 Y3', 'Q3 Y3', 'Q4 Y3'],
+                datasets: [{
+                    label: 'Transaction Volume ($M)',
+                    data: [15, 35, 55, 75, 100, 140, 190, 250, 320, 400, 500, 600],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3
+                }, {
+                    label: 'Active Users (K)',
+                    data: [5, 15, 35, 75, 100, 130, 160, 200, 240, 280, 320, 350],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + 'K';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update active nav on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
