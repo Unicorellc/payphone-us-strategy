@@ -973,6 +973,135 @@
             margin-top: 0.5rem;
         }
 
+        /* Vendors Section */
+        .vendor-category {
+            margin-bottom: 2.5rem;
+        }
+
+        .vendor-category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .vendor-category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .vendor-category-icon.mtl { background: rgba(99, 102, 241, 0.1); }
+        .vendor-category-icon.bond { background: rgba(245, 158, 11, 0.1); }
+        .vendor-category-icon.compliance { background: rgba(16, 185, 129, 0.1); }
+        .vendor-category-icon.insurance { background: rgba(239, 68, 68, 0.1); }
+        .vendor-category-icon.ewa { background: rgba(99, 102, 241, 0.1); }
+        .vendor-category-icon.baas { background: rgba(16, 185, 129, 0.1); }
+        .vendor-category-icon.legal { background: rgba(245, 158, 11, 0.1); }
+
+        .vendor-category-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .vendor-category-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .vendors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .vendor-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vendor-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .vendor-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .vendor-tag {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .vendor-tag.recommended {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        .vendor-tag.enterprise {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .vendor-tag.niche {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .vendor-tag.startup {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .vendor-desc {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .vendor-url {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .vendor-url:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .vendors-grid { grid-template-columns: 1fr; }
+        }
+
         /* Footer */
         .footer {
             background: var(--dark);
@@ -1091,6 +1220,12 @@
                     <a href="#actions" class="sidebar-nav-link">
                         <span class="sidebar-nav-icon">✅</span>
                         Next Steps
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#vendors" class="sidebar-nav-link">
+                        <span class="sidebar-nav-icon">🏢</span>
+                        Potential Vendors
                     </a>
                 </li>
             </ul>
@@ -1778,6 +1913,268 @@
             <h3>💰 Estimated Licensing Budget</h3>
             <div class="budget-amount">$50K - $100K</div>
             <div class="budget-note">Application fees, surety bonds, legal counsel, and compliance setup across all states</div>
+        </div>
+    </section>
+
+    <!-- Potential Vendors -->
+    <section class="section" id="vendors">
+        <div class="section-header">
+            <div class="section-badge">Vendors & Partners</div>
+            <h2 class="section-title">Potential Vendors</h2>
+            <p class="section-description">Vetted service providers across each licensing and compliance category for Payphone's U.S. market entry.</p>
+        </div>
+
+        <!-- MTL Sponsors -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon mtl">🔄</div>
+                <div>
+                    <div class="vendor-category-title">MTL Sponsors (Remittances)</div>
+                    <div class="vendor-category-subtitle">Licensed money transmitters — operate as agent under their licenses</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Viamericas</div>
+                    <span class="vendor-tag recommended">Top Pick</span>
+                    <div class="vendor-desc">Ranked #1 remittance provider (Inter-American Dialogue). Licensed in all 50 states. Vianex API platform provides access to 100K+ payout locations in 80+ countries. Strong LATAM corridor focus. HQ: Coral Gables, FL.</div>
+                    <a href="https://corporate.viamericas.com/vianex/" target="_blank" class="vendor-url">→ corporate.viamericas.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Intermex (International Money Express)</div>
+                    <span class="vendor-tag recommended">LATAM Focus</span>
+                    <div class="vendor-desc">Licensed in 49 states. Specializes in remittances to Latin America & Caribbean. Agent program lets businesses send transfers under Intermex license. HQ: Miami, FL. NMLS #897906.</div>
+                    <a href="https://www.intermexonline.com/become-an-agent" target="_blank" class="vendor-url">→ intermexonline.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">MoneyGram</div>
+                    <span class="vendor-tag enterprise">Enterprise</span>
+                    <div class="vendor-desc">Licensed in all 50 states + territories. 200+ countries, 430K+ agent locations. B2B API platform for fintechs. Supports bank/mobile wallet/card deposits. NMLS #898432.</div>
+                    <a href="https://business.moneygram.com" target="_blank" class="vendor-url">→ business.moneygram.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Currencycloud (Visa)</div>
+                    <span class="vendor-tag enterprise">API-First</span>
+                    <div class="vendor-desc">MTL in all 50 states + D.C. (NMLS #1428924). RESTful APIs for multi-currency payments. Purpose-built for fintechs to embed cross-border payment capabilities. Acquired by Visa.</div>
+                    <a href="https://www.currencycloud.com" target="_blank" class="vendor-url">→ currencycloud.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Surety Bond Providers -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon bond">📜</div>
+                <div>
+                    <div class="vendor-category-title">Surety Bond Providers</div>
+                    <div class="vendor-category-subtitle">Required for state lending & money transmitter licenses (premiums: 1-5% of bond amount)</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">ProSure Group</div>
+                    <span class="vendor-tag recommended">Specialist</span>
+                    <div class="vendor-desc">23+ years experience, partnerships with 30+ surety companies. Specific expertise in money transmitter bonds with state-by-state guidance.</div>
+                    <a href="https://www.prosuregroup.com" target="_blank" class="vendor-url">→ prosuregroup.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Surety1 (AssuredPartners)</div>
+                    <span class="vendor-tag enterprise">All 50 States</span>
+                    <div class="vendor-desc">Licensed in all 50 states, represents 15+ surety companies. Dedicated money transmitter bond program with state-by-state breakdowns. Operating since 2003.</div>
+                    <a href="https://surety1.com" target="_blank" class="vendor-url">→ surety1.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Lance Surety Bond Associates</div>
+                    <span class="vendor-tag niche">Startup-Friendly</span>
+                    <div class="vendor-desc">National agency licensed in all 50 states. Specializes in MTL bonds and offers a "bad credit" program for startups without established credit profiles.</div>
+                    <a href="https://www.lancesuretybonds.com" target="_blank" class="vendor-url">→ lancesuretybonds.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">JW Surety Bonds</div>
+                    <span class="vendor-tag enterprise">All 50 States</span>
+                    <div class="vendor-desc">Handles surety bonds in all 50 states including money transmitter bonds and various license/permit bonds for financial services companies.</div>
+                    <a href="https://www.jwsuretybonds.com" target="_blank" class="vendor-url">→ jwsuretybonds.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- AML / Compliance Platforms -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon compliance">🛡️</div>
+                <div>
+                    <div class="vendor-category-title">AML / Compliance Platforms</div>
+                    <div class="vendor-category-subtitle">KYC, AML/BSA compliance, transaction monitoring, and fraud prevention</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Alloy</div>
+                    <span class="vendor-tag recommended">Top Pick</span>
+                    <div class="vendor-desc">Identity decisioning platform used by 800+ financial institutions. KYC, AML screening, fraud prevention. 200+ data source integrations. Valued at $1.35B+.</div>
+                    <a href="https://www.alloy.com" target="_blank" class="vendor-url">→ alloy.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Unit21</div>
+                    <span class="vendor-tag recommended">No-Code</span>
+                    <div class="vendor-desc">No-code platform for risk and compliance operations. AML transaction monitoring, fraud detection, SAR/CTR filing workflows, and case management. Built for fintechs.</div>
+                    <a href="https://www.unit21.ai" target="_blank" class="vendor-url">→ unit21.ai</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Sardine</div>
+                    <span class="vendor-tag niche">AI-Powered</span>
+                    <div class="vendor-desc">AI risk platform covering fraud prevention, AML compliance, and credit underwriting. Uses device intelligence and behavior biometrics. Strong for payments/fintech.</div>
+                    <a href="https://www.sardine.ai" target="_blank" class="vendor-url">→ sardine.ai</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insurance Partners -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon insurance">❤️</div>
+                <div>
+                    <div class="vendor-category-title">Insurance Partners (Assistance Plans)</div>
+                    <div class="vendor-category-subtitle">Carriers for funeral repatriation, final expense, and group insurance products</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Continental General Insurance (CGIC)</div>
+                    <span class="vendor-tag recommended">Top Pick</span>
+                    <div class="vendor-desc">Licensed life, accident & health carrier in 49 states + D.C. Founded 1961, HQ Austin, TX. Specializes in long-term care and life insurance. Known in the assistance-plan space.</div>
+                    <a href="https://cgic.com" target="_blank" class="vendor-url">→ cgic.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Guardian Life</div>
+                    <span class="vendor-tag enterprise">Foreign Nationals</span>
+                    <div class="vendor-desc">Offers final expense insurance for foreign nationals via their Global Citizens Program. Simplified/guaranteed issue (no medical exam). Designed for individuals without traditional documentation.</div>
+                    <a href="https://www.guardianlife.com" target="_blank" class="vendor-url">→ guardianlife.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">TruStage (fka CUNA Mutual)</div>
+                    <span class="vendor-tag niche">Hispanic Market</span>
+                    <div class="vendor-desc">Consumer insurance via credit unions. Funeral preplanning & final expense insurance. Specific initiatives targeting the Hispanic community. Group insurance programs.</div>
+                    <a href="https://www.trustage.com" target="_blank" class="vendor-url">→ trustage.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Confie</div>
+                    <span class="vendor-tag recommended">Latino Market</span>
+                    <div class="vendor-desc">Largest personal lines insurance agency in the U.S. focused on the Hispanic market. 1,250+ offices, bilingual support. Potential distribution or co-marketing partner.</div>
+                    <a href="https://www.confie.com" target="_blank" class="vendor-url">→ confie.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- EWA Infrastructure -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon ewa">💡</div>
+                <div>
+                    <div class="vendor-category-title">EWA Infrastructure Providers</div>
+                    <div class="vendor-category-subtitle">Technology and infrastructure for earned wage access products</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Payactiv</div>
+                    <span class="vendor-tag recommended">Access-as-a-Service</span>
+                    <div class="vendor-desc">API-driven "Access-as-a-Service" infrastructure for embedding EWA. Includes funding, risk management, compliance, disbursement, and settlement. Trusted by 3 of top 5 HCM providers.</div>
+                    <a href="https://www.payactiv.com/access-as-a-service" target="_blank" class="vendor-url">→ payactiv.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">DailyPay</div>
+                    <span class="vendor-tag enterprise">180+ Integrations</span>
+                    <div class="vendor-desc">Major EWA platform with 180+ pre-built HCM/payroll integrations (ADP, Workday). "DailyPay Built-In" embedded API. PCI DSS Level 1 & ISO 27001 certified.</div>
+                    <a href="https://www.dailypay.com" target="_blank" class="vendor-url">→ dailypay.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Clair</div>
+                    <span class="vendor-tag startup">Embedded EWA</span>
+                    <div class="vendor-desc">Embedded EWA fintech partnering with payroll platforms. All advances originated by Pathward, N.A. for compliance. 80K+ businesses, 2M+ employees. Partners: Gusto, TriNet.</div>
+                    <a href="https://getclair.com" target="_blank" class="vendor-url">→ getclair.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Pinwheel</div>
+                    <span class="vendor-tag niche">Payroll Data</span>
+                    <div class="vendor-desc">Market-leading payroll data connectivity platform. 1,600+ income/payroll platforms, 1.5M employers. Provides the payroll data infrastructure to power EWA eligibility and repayment.</div>
+                    <a href="https://www.pinwheelapi.com" target="_blank" class="vendor-url">→ pinwheelapi.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- BaaS Partners -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon baas">🏦</div>
+                <div>
+                    <div class="vendor-category-title">Banking-as-a-Service (BaaS) Partners</div>
+                    <div class="vendor-category-subtitle">Banking infrastructure — accounts, cards, payments without a bank charter</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Unit</div>
+                    <span class="vendor-tag recommended">API-First</span>
+                    <div class="vendor-desc">API-first BaaS platform for embedding bank accounts, cards, and payments. Deposit accounts, debit/credit cards, ACH, wires, check deposits via clean APIs.</div>
+                    <a href="https://www.unit.co" target="_blank" class="vendor-url">→ unit.co</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Synctera</div>
+                    <span class="vendor-tag recommended">Full Stack</span>
+                    <div class="vendor-desc">APIs for banking and payments products. Ledger/accounts, card issuance, ACH, and integrated KYC/AML/fraud detection ("Compliance as a Service"). White-label app option.</div>
+                    <a href="https://www.synctera.com" target="_blank" class="vendor-url">→ synctera.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Pathward, N.A.</div>
+                    <span class="vendor-tag enterprise">Sponsor Bank</span>
+                    <div class="vendor-desc">Pioneer BaaS sponsor bank (~$7.6B assets). Nationally chartered = exempt from state MTLs. 30+ fintech partnerships (Coinbase, MoneyLion, MoneyGram). HQ: Sioux Falls, SD.</div>
+                    <a href="https://www.pathward.com" target="_blank" class="vendor-url">→ pathward.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Cross River Bank</div>
+                    <span class="vendor-tag enterprise">Sponsor Bank</span>
+                    <div class="vendor-desc">FDIC-member fintech sponsor bank. Embedded payments, cards, lending, crypto. Partners: Stripe, Upstart, Affirm. HQ: Fort Lee, NJ. API-based infrastructure.</div>
+                    <a href="https://www.crossriver.com" target="_blank" class="vendor-url">→ crossriver.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance Law Firms & Consultants -->
+        <div class="vendor-category">
+            <div class="vendor-category-header">
+                <div class="vendor-category-icon legal">⚖️</div>
+                <div>
+                    <div class="vendor-category-title">Compliance Law Firms & Consultants</div>
+                    <div class="vendor-category-subtitle">Legal counsel for licensing, FinCEN registration, and ongoing compliance</div>
+                </div>
+            </div>
+            <div class="vendors-grid">
+                <div class="vendor-card">
+                    <div class="vendor-name">Orrick (fka Buckley LLP)</div>
+                    <span class="vendor-tag enterprise">Top Tier</span>
+                    <div class="vendor-desc">Global firm with Chambers Band 1 fintech practice. MTL licensing, cross-border remittances, AML/BSA policy, consumer finance compliance. Merged with Buckley LLP (2023).</div>
+                    <a href="https://www.orrick.com/en/Practices/Fintech" target="_blank" class="vendor-url">→ orrick.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Cogent Law Group</div>
+                    <span class="vendor-tag recommended">Fintech Focus</span>
+                    <div class="vendor-desc">DC-based firm advising high-growth fintechs. Centralized approach to multi-state MTL applications. Manages communications with regulators across jurisdictions. Admitted in 12+ states.</div>
+                    <a href="https://cogentlaw.com" target="_blank" class="vendor-url">→ cogentlaw.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">InnReg</div>
+                    <span class="vendor-tag recommended">End-to-End</span>
+                    <div class="vendor-desc">Fintech compliance consulting since 2013. 30+ specialists. FinCEN MSB registration, state MTL filings, surety bond coordination, AML/KYC program design, and ongoing compliance outsourcing.</div>
+                    <a href="https://www.innreg.com" target="_blank" class="vendor-url">→ innreg.com</a>
+                </div>
+                <div class="vendor-card">
+                    <div class="vendor-name">Cornerstone Licensing</div>
+                    <span class="vendor-tag niche">License Management</span>
+                    <div class="vendor-desc">25+ years, 500K+ filings. Handles MTL applications, surety bond procurement, and ongoing license maintenance. Atlas SaaS dashboard for tracking license statuses and renewals.</div>
+                    <a href="https://cornerstonelicensing.com" target="_blank" class="vendor-url">→ cornerstonelicensing.com</a>
+                </div>
+            </div>
         </div>
     </section>
 
