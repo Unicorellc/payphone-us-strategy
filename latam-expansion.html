@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payphone LATAM — Merchant Acquiring & Betting Partnerships</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #10b981; --accent: #f59e0b;
+            --danger: #ef4444; --dark: #1e1b4b; --text: #374151; --text-light: #6b7280;
+            --bg: #f8fafc; --white: #ffffff; --border: #e5e7eb;
+            --betting: #dc2626; --acquiring: #0891b2; --orchestration: #7c3aed;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Password */
+        .password-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #0f0a2e 0%, #1a1145 50%, #0d1117 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .password-screen.hidden { display: none; }
+        .password-box { background: white; padding: 3rem; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); text-align: center; max-width: 420px; width: 90%; }
+        .password-logo { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem; }
+        .password-box h2 { font-size: 1.75rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; }
+        .password-box p { color: var(--text-light); margin-bottom: 2rem; font-size: 0.95rem; }
+        .password-input-group { position: relative; margin-bottom: 1.5rem; }
+        .password-input { width: 100%; padding: 1rem 1.25rem; border: 2px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: inherit; transition: all 0.2s; }
+        .password-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        .password-input.error { border-color: #ef4444; animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+        .password-btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .password-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(99,102,241,0.3); }
+        .password-error-msg { color: #ef4444; font-size: 0.85rem; margin-top: -1rem; margin-bottom: 1rem; display: none; }
+        .password-error-msg.show { display: block; }
+        .content-wrapper { display: none; }
+        .content-wrapper.unlocked { display: block; }
+
+        /* Sidebar */
+        .sidebar { position: fixed; left: 0; top: 0; width: 270px; height: 100vh; background: #0f0a2e; padding: 1.5rem; overflow-y: auto; z-index: 1000; display: flex; flex-direction: column; }
+        .sidebar-logo { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 1.5rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.08); cursor: default; }
+        .sidebar-logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .sidebar-logo-text { color: white; font-weight: 700; font-size: 1rem; }
+        .sidebar-logo-sub { color: rgba(255,255,255,0.5); font-size: 0.68rem; }
+        .sidebar-section { margin-bottom: 1.25rem; }
+        .sidebar-section-title { color: rgba(255,255,255,0.3); font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.6rem; padding-left: 0.75rem; }
+        .sidebar-nav { list-style: none; }
+        .sidebar-nav-item { margin-bottom: 0.2rem; }
+        .sidebar-nav-link { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0.75rem; color: rgba(255,255,255,0.6); text-decoration: none; border-radius: 10px; transition: all 0.2s; font-size: 0.8rem; }
+        .sidebar-nav-link:hover { background: rgba(255,255,255,0.08); color: white; }
+        .sidebar-nav-link.active { background: var(--primary); color: white; font-weight: 500; }
+        .sidebar-nav-icon { width: 18px; text-align: center; font-size: 0.8rem; }
+        .main-content { margin-left: 270px; }
+
+        /* Mobile */
+        .sidebar-toggle { display: none; position: fixed; bottom: 1.5rem; left: 1.5rem; width: 50px; height: 50px; background: #0f0a2e; border: none; border-radius: 50%; color: white; font-size: 1.25rem; cursor: pointer; z-index: 1001; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+            .sidebar-overlay.open { display: block; }
+            .main-content { margin-left: 0; }
+        }
+
+        /* Header */
+        .header { background: linear-gradient(135deg, #0f0a2e 0%, #1a1145 50%, #0891b2 100%); color: white; padding: 3.5rem 2rem 3rem; position: relative; overflow: hidden; }
+        .header::before { content: ''; position: absolute; top: -30%; right: -10%; width: 500px; height: 500px; background: var(--acquiring); opacity: 0.08; border-radius: 50%; }
+        .header::after { content: ''; position: absolute; bottom: -40%; left: -5%; width: 400px; height: 400px; background: var(--betting); opacity: 0.06; border-radius: 50%; }
+        .header-content { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        .header-badges { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .header-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .badge-latam { background: rgba(16,185,129,0.25); border: 1px solid rgba(16,185,129,0.4); }
+        .badge-acq { background: rgba(8,145,178,0.2); border: 1px solid rgba(8,145,178,0.35); }
+        .badge-bet { background: rgba(220,38,38,0.2); border: 1px solid rgba(220,38,38,0.35); }
+        .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.2; }
+        .header h1 span { color: var(--secondary); }
+        .header h1 .accent2 { color: #22d3ee; }
+        .header-desc { font-size: 1.05rem; opacity: 0.85; max-width: 750px; }
+        .header-stats { display: flex; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+        .header-stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1rem 1.5rem; text-align: center; min-width: 160px; }
+        .header-stat .stat-num { font-size: 1.75rem; font-weight: 800; display: block; }
+        .header-stat .stat-label { font-size: 0.72rem; opacity: 0.7; margin-top: 0.25rem; }
+
+        /* Sections */
+        .section { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .section-header { margin-bottom: 2rem; }
+        .section-badge { display: inline-block; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem; }
+        .badge-red { background: rgba(220,38,38,0.1); color: var(--betting); }
+        .badge-blue { background: rgba(8,145,178,0.1); color: var(--acquiring); }
+        .badge-green { background: rgba(16,185,129,0.1); color: var(--secondary); }
+        .badge-orange { background: rgba(245,158,11,0.1); color: var(--accent); }
+        .badge-purple { background: rgba(124,58,237,0.1); color: var(--orchestration); }
+        .section-title { font-size: 1.75rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; }
+        .section-description { font-size: 1rem; color: var(--text-light); }
+        .card { background: var(--white); border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* Current State */
+        .current-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .current-card { text-align: center; padding: 1.5rem 1rem; }
+        .current-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .current-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+        .current-card p { font-size: 0.8rem; color: var(--text-light); }
+
+        /* Vendor Cards */
+        .vendor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.25rem; }
+        .vendor-card { border-left: 4px solid var(--border); transition: all 0.2s; }
+        .vendor-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .vendor-card.tier1 { border-left-color: var(--secondary); }
+        .vendor-card.tier2 { border-left-color: var(--primary); }
+        .vendor-card.tier3 { border-left-color: var(--accent); }
+        .vendor-card.tier-bet { border-left-color: var(--betting); }
+        .vendor-card.tier-regional { border-left-color: #f97316; }
+        .vendor-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
+        .vendor-name { font-size: 1.05rem; font-weight: 700; color: var(--dark); }
+        .vendor-origin { font-size: 0.72rem; color: var(--text-light); margin-top: 0.15rem; }
+        .vendor-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+        .vendor-tag { padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        .tag-local { background: rgba(16,185,129,0.1); color: var(--secondary); }
+        .tag-cross { background: rgba(99,102,241,0.1); color: var(--primary); }
+        .tag-payfac { background: rgba(124,58,237,0.1); color: var(--orchestration); }
+        .tag-pos { background: rgba(245,158,11,0.1); color: var(--accent); }
+        .tag-apm { background: rgba(8,145,178,0.1); color: var(--acquiring); }
+        .tag-orch { background: rgba(124,58,237,0.1); color: var(--orchestration); }
+        .tag-sports { background: rgba(220,38,38,0.1); color: var(--betting); }
+        .tag-casino { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+        .tag-esports { background: rgba(8,145,178,0.1); color: var(--acquiring); }
+        .tag-dfs { background: rgba(245,158,11,0.1); color: var(--accent); }
+        .tag-crypto { background: rgba(99,102,241,0.1); color: var(--primary); }
+        .tag-licensed { background: rgba(16,185,129,0.08); color: var(--secondary); }
+        .vendor-countries { font-size: 0.8rem; color: var(--text); margin-bottom: 0.5rem; }
+        .vendor-countries strong { color: var(--dark); font-weight: 600; }
+        .vendor-desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.5; }
+        .vendor-features { list-style: none; margin-top: 0.5rem; }
+        .vendor-features li { font-size: 0.78rem; color: var(--text); padding: 0.2rem 0; display: flex; align-items: center; gap: 0.4rem; }
+        .vendor-features li::before { content: '\2713'; color: var(--secondary); font-weight: 700; font-size: 0.7rem; }
+        .vendor-highlight { margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: rgba(16,185,129,0.06); border-radius: 8px; border-left: 3px solid var(--secondary); font-size: 0.78rem; color: var(--dark); font-weight: 500; }
+        .vendor-highlight.warn { background: rgba(245,158,11,0.06); border-left-color: var(--accent); }
+        .vendor-highlight.bet { background: rgba(220,38,38,0.05); border-left-color: var(--betting); }
+
+        /* Country Table */
+        .country-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .country-table th { background: #0f0a2e; color: white; padding: 0.85rem 1rem; font-size: 0.78rem; font-weight: 600; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; }
+        .country-table td { padding: 0.75rem 1rem; font-size: 0.82rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .country-table tr:last-child td { border-bottom: none; }
+        .country-table tr:hover td { background: rgba(99,102,241,0.03); }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
+        .status-dot.regulated { background: var(--secondary); }
+        .status-dot.partial { background: var(--accent); }
+        .status-dot.pending { background: var(--text-light); }
+        .status-dot.unregulated { background: var(--danger); }
+
+        /* Market Size */
+        .market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .market-card { text-align: center; padding: 1.5rem; }
+        .market-card .market-num { font-size: 2rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
+        .market-card .market-label { font-size: 0.85rem; font-weight: 600; color: var(--dark); }
+        .market-card .market-sub { font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem; }
+
+        /* Strategy Box */
+        .strategy-box { background: linear-gradient(135deg, #0f0a2e 0%, #1a1145 100%); color: white; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; }
+        .strategy-box::before { content: ''; position: absolute; top: -20%; right: -10%; width: 300px; height: 300px; background: var(--acquiring); opacity: 0.06; border-radius: 50%; }
+        .strategy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .strategy-item { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.25rem; }
+        .strategy-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .strategy-item p { font-size: 0.82rem; opacity: 0.7; }
+        .strategy-item ul { list-style: none; margin-top: 0.5rem; }
+        .strategy-item ul li { font-size: 0.78rem; opacity: 0.8; padding: 0.2rem 0; }
+        .strategy-item ul li::before { content: '\2192 '; opacity: 0.5; }
+
+        /* Footer */
+        .footer { background: #0f0a2e; color: rgba(255,255,255,0.6); padding: 2rem; text-align: center; font-size: 0.85rem; }
+
+        @media (max-width: 1024px) {
+            .current-grid { grid-template-columns: repeat(2, 1fr); }
+            .vendor-grid { grid-template-columns: 1fr; }
+            .market-grid { grid-template-columns: 1fr; }
+            .strategy-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.75rem; }
+            .header-stats { flex-direction: column; }
+            .country-table { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="password-screen" id="passwordScreen">
+        <div class="password-box">
+            <div class="password-logo">&#127758;</div>
+            <h2>LATAM Expansion</h2>
+            <p>This document is confidential. Please enter the password to continue.</p>
+            <form id="passwordForm">
+                <div class="password-input-group">
+                    <input type="password" class="password-input" id="passwordInput" placeholder="Enter password" autocomplete="off">
+                </div>
+                <div class="password-error-msg" id="errorMsg">Incorrect password. Please try again.</div>
+                <button type="submit" class="password-btn">Access Document</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content-wrapper" id="contentWrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">&#127758;</div>
+            <div>
+                <div class="sidebar-logo-text">Payphone</div>
+                <div class="sidebar-logo-sub">LATAM Expansion Plan</div>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Overview</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item"><a href="#current" class="sidebar-nav-link active"><span class="sidebar-nav-icon">&#9889;</span> Current State</a></li>
+                <li class="sidebar-nav-item"><a href="#country-map" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#127463;</span> Country Priority</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Merchant Acquiring</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item"><a href="#tier1-acquirers" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#11088;</span> Tier 1: LATAM Specialists</a></li>
+                <li class="sidebar-nav-item"><a href="#tier2-acquirers" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#127760;</span> Tier 2: Global Players</a></li>
+                <li class="sidebar-nav-item"><a href="#orchestration" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#128260;</span> Orchestration</a></li>
+                <li class="sidebar-nav-item"><a href="#local-acquirers" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#127463;</span> Local Acquirers</a></li>
+                <li class="sidebar-nav-item"><a href="#acquiring-strategy" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#128161;</span> Recommended Strategy</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Betting & iGaming</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item"><a href="#betting-regulatory" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#9878;</span> Regulatory Map</a></li>
+                <li class="sidebar-nav-item"><a href="#betting-market" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#128200;</span> Market Size</a></li>
+                <li class="sidebar-nav-item"><a href="#international-books" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#127942;</span> International Books</a></li>
+                <li class="sidebar-nav-item"><a href="#latam-books" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#9917;</span> LATAM-Native Books</a></li>
+                <li class="sidebar-nav-item"><a href="#esports-fantasy" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#127918;</span> Esports & Fantasy</a></li>
+                <li class="sidebar-nav-item"><a href="#betting-strategy" class="sidebar-nav-link"><span class="sidebar-nav-icon">&#128161;</span> Partnership Strategy</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-badges">
+                    <span class="header-badge badge-latam">LATAM Expansion</span>
+                    <span class="header-badge badge-acq">Merchant Acquiring</span>
+                    <span class="header-badge badge-bet">Betting & iGaming</span>
+                </div>
+                <h1>Payphone <span>LATAM</span> — <span class="accent2">Acquiring & Betting</span></h1>
+                <p class="header-desc">Expand Payphone's merchant acquiring across Latin America and partner with betting/iGaming companies for payment processing via API. Currently Ecuador-only — targeting 15+ LATAM countries.</p>
+
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="stat-num" style="color: #22d3ee;">37+</span>
+                        <span class="stat-label">Acquirers & Processors</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-num" style="color: var(--betting);">35+</span>
+                        <span class="stat-label">Betting Companies</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-num" style="color: var(--secondary);">$6B+</span>
+                        <span class="stat-label">LATAM iGaming GGR 2025</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-num" style="color: var(--accent);">8</span>
+                        <span class="stat-label">Regulated Betting Markets</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Current State -->
+        <section class="section" id="current">
+            <div class="section-header">
+                <div class="section-badge badge-green">Current State</div>
+                <h2 class="section-title">Payphone Today — Ecuador</h2>
+                <p class="section-description">Payphone currently operates in Ecuador with card acceptance, TAP payments, P2P transfers, and a Mastercard prepaid card. 5% + IVA commission on card transactions. No POS hardware needed.</p>
+            </div>
+
+            <div class="current-grid">
+                <div class="card current-card">
+                    <div class="current-icon">&#128179;</div>
+                    <h4>Card Payments</h4>
+                    <p>Accept Visa, Mastercard, Diners, Discover via smartphone</p>
+                </div>
+                <div class="card current-card">
+                    <div class="current-icon">&#128241;</div>
+                    <h4>TAP to Pay</h4>
+                    <p>NFC contactless payments — Android phone becomes a POS terminal</p>
+                </div>
+                <div class="card current-card">
+                    <div class="current-icon">&#128176;</div>
+                    <h4>P2P Transfers</h4>
+                    <p>Free instant transfers between Payphone users + payment links</p>
+                </div>
+                <div class="card current-card">
+                    <div class="current-icon">&#128179;</div>
+                    <h4>Mastercard</h4>
+                    <p>Payphone prepaid Mastercard for worldwide spending</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem; border-left: 4px solid var(--accent); background: rgba(245,158,11,0.03);">
+                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem;">The Challenge</h4>
+                <p style="font-size: 0.88rem; color: var(--text-light);">Payphone needs <strong>merchant acquiring partnerships</strong> to process card payments in countries beyond Ecuador. Each country has different local acquirers, card networks, regulations, and alternative payment methods. Additionally, the <strong>$6B+ LATAM betting market</strong> represents a massive opportunity for payment processing via API integration.</p>
+            </div>
+        </section>
+
+        <!-- Country Priority -->
+        <section class="section" id="country-map" style="background: linear-gradient(180deg, #f8fafc 0%, #ecfdf5 0%, #f8fafc 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-green">Expansion</div>
+                    <h2 class="section-title">Country Priority & Best Local Acquirers</h2>
+                    <p class="section-description">Recommended local acquiring partners per country for the lowest interchange and highest approval rates.</p>
+                </div>
+
+                <table class="country-table">
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th>Priority</th>
+                            <th>Recommended Local Acquirers</th>
+                            <th>Key APMs</th>
+                            <th>Betting Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Colombia</strong></td>
+                            <td style="color: var(--danger); font-weight: 700;">P1</td>
+                            <td>Credibanco, Redeban, PayU, Wompi</td>
+                            <td>PSE, Efecty, Nequi, Daviplata</td>
+                            <td><span class="status-dot regulated"></span>Regulated (Coljuegos)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mexico</strong></td>
+                            <td style="color: var(--danger); font-weight: 700;">P1</td>
+                            <td>Conekta, Openpay, Clip, Prosa (switch)</td>
+                            <td>OXXO, SPEI, CoDi/DiMo</td>
+                            <td><span class="status-dot regulated"></span>Regulated (SEGOB)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Brazil</strong></td>
+                            <td style="color: var(--danger); font-weight: 700;">P1</td>
+                            <td>Cielo, Stone, Rede, PagBrasil</td>
+                            <td>PIX, Boleto, PEC Flash</td>
+                            <td><span class="status-dot regulated"></span>Regulated (SPA, Jan 2025)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Peru</strong></td>
+                            <td style="color: var(--accent); font-weight: 700;">P2</td>
+                            <td>Niubiz, Kushki, Lyra</td>
+                            <td>PagoEfectivo, Yape, Plin</td>
+                            <td><span class="status-dot regulated"></span>Regulated (MINCETUR)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Argentina</strong></td>
+                            <td style="color: var(--accent); font-weight: 700;">P2</td>
+                            <td>Mercado Pago, Fiserv, Prisma</td>
+                            <td>Rapipago, PagoFacil, Debin</td>
+                            <td><span class="status-dot partial"></span>Province-level</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chile</strong></td>
+                            <td style="color: var(--accent); font-weight: 700;">P2</td>
+                            <td>Transbank (monopoly), Lyra, Kushki</td>
+                            <td>Khipu, Servipag, WebPay</td>
+                            <td><span class="status-dot pending"></span>Pending (bill approved)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Panama</strong></td>
+                            <td style="color: var(--primary); font-weight: 700;">P3</td>
+                            <td>dLocal, Kushki, PayRetailers</td>
+                            <td>Nequi, bank transfers</td>
+                            <td><span class="status-dot regulated"></span>Regulated (JCJ)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dominican Republic</strong></td>
+                            <td style="color: var(--primary); font-weight: 700;">P3</td>
+                            <td>dLocal, PayRetailers, Bamboo</td>
+                            <td>Bank transfers, cash</td>
+                            <td><span class="status-dot partial"></span>Recently strengthened</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Costa Rica</strong></td>
+                            <td style="color: var(--primary); font-weight: 700;">P3</td>
+                            <td>dLocal, Kushki, PayRetailers</td>
+                            <td>SINPE M&oacute;vil</td>
+                            <td><span class="status-dot unregulated"></span>Hosting jurisdiction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uruguay</strong></td>
+                            <td style="color: var(--primary); font-weight: 700;">P3</td>
+                            <td>Bamboo Payment, dLocal, Getnet</td>
+                            <td>Abitab, RedPagos</td>
+                            <td><span class="status-dot partial"></span>State monopoly model</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tier 1 Acquirers -->
+        <section class="section" id="tier1-acquirers">
+            <div class="section-header">
+                <div class="section-badge badge-blue">Tier 1</div>
+                <h2 class="section-title">LATAM-Focused Cross-Border Specialists</h2>
+                <p class="section-description">Single-API integrations covering multiple LATAM countries with local acquiring, APMs, and FX management.</p>
+            </div>
+
+            <div class="vendor-grid">
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">dLocal</div><div class="vendor-origin">Uruguay &middot; NASDAQ: DLO</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-cross">Cross-Border</span><span class="vendor-tag tag-payfac">PayFac</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>18+ countries:</strong> MX, BR, CO, PE, CL, AR, EC, UY, PY, BO, PA, CR, GT, SV, HN, NI, DO</div>
+                    <div class="vendor-desc">Single REST API for all markets. Local acquiring in most major LATAM countries. 600+ APMs. FX management, payouts, recurring.</div>
+                    <ul class="vendor-features">
+                        <li>Broadest LATAM coverage from a single integration</li>
+                        <li>Supports marketplace / platform split payments</li>
+                        <li>Clients: Amazon, Spotify, Uber, Nike, Google</li>
+                    </ul>
+                    <div class="vendor-highlight">Top pick for broadest LATAM coverage with a single API</div>
+                </div>
+
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Kushki</div><div class="vendor-origin">Quito, Ecuador &middot; SoftBank-backed</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS</span><span class="vendor-tag tag-payfac">PayFac</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>12 countries:</strong> EC, CO, MX, PE, CL, BR, BO, SV, GT, HN, CR, PA</div>
+                    <div class="vendor-desc">Ecuador-based — deep local acquiring capability. Card-present (POS/SmartPOS) + card-not-present. Anti-fraud, tokenization, recurring billing.</div>
+                    <ul class="vendor-features">
+                        <li>Same country of origin as Payphone</li>
+                        <li>Direct connections to local acquirers in each country</li>
+                        <li>PayFac / sub-merchant model supported</li>
+                    </ul>
+                    <div class="vendor-highlight">Natural strategic partner — Ecuador-based, deep Andean market expertise</div>
+                </div>
+
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">EBANX</div><div class="vendor-origin">Curitiba, Brazil &middot; NASDAQ: EBAX</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-cross">Cross-Border</span><span class="vendor-tag tag-apm">APMs</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>15 countries:</strong> BR, MX, CO, CL, AR, PE, EC, BO, GT, UY, PY, CR, SV, PA, DO</div>
+                    <div class="vendor-desc">Brazil specialist expanding pan-LATAM. 100+ local payment methods. Local currency processing, FX, payouts, recurring.</div>
+                    <ul class="vendor-features">
+                        <li>Strongest Brazil coverage (PIX, Boleto, local cards)</li>
+                        <li>Marketplace / PayFac model supported</li>
+                        <li>Clients: AliExpress, Shein, Spotify, Airbnb, Uber</li>
+                    </ul>
+                </div>
+
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Mercado Pago</div><div class="vendor-origin">Buenos Aires &middot; MELI ($80B+)</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS/QR</span><span class="vendor-tag tag-payfac">Marketplace</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>8 countries:</strong> AR, BR, MX, CO, CL, PE, UY, EC (limited)</div>
+                    <div class="vendor-desc">LATAM's largest fintech ecosystem. 50M+ wallet users. Local acquiring, QR payments, mPOS, BNPL. Dominant in Argentina.</div>
+                    <ul class="vendor-features">
+                        <li>Largest fintech ecosystem in LATAM</li>
+                        <li>Card-present (Point Smart) + full digital wallet</li>
+                        <li>Marketplace split payments are core functionality</li>
+                    </ul>
+                </div>
+
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Rapyd</div><div class="vendor-origin">Global &middot; Visa acquisition pending</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-cross">Cross-Border</span><span class="vendor-tag tag-apm">900+ APMs</span><span class="vendor-tag tag-payfac">PayFac</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>10+ LATAM:</strong> MX, BR, CO, CL, PE, AR, EC, PA, CR, DO</div>
+                    <div class="vendor-desc">Fintech-as-a-Service. Local acquiring, 900+ global APMs, e-wallets, disbursements, FX, card issuing. Platform/marketplace model built-in.</div>
+                    <ul class="vendor-features">
+                        <li>Full fintech stack: collect, disburse, issue cards</li>
+                        <li>PayFac / sub-merchant onboarding built-in</li>
+                        <li>Valued at $8.75B — Visa acquisition pending</li>
+                    </ul>
+                </div>
+
+                <div class="card vendor-card tier1">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">PayRetailers</div><div class="vendor-origin">Barcelona &middot; LATAM specialist</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-cross">Cross-Border</span><span class="vendor-tag tag-apm">250+ APMs</span><span class="vendor-tag tag-payfac">iGaming</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>17 countries:</strong> MX, BR, CO, CL, PE, AR, EC, CR, PA, SV, GT, UY, PY, BO, DO, NI, HN</div>
+                    <div class="vendor-desc">Deep LATAM specialization with strong iGaming, forex, and e-commerce verticals. 250+ local payment methods, cash networks, bank transfers.</div>
+                    <ul class="vendor-features">
+                        <li>Specifically serves iGaming / betting vertical</li>
+                        <li>Cash payment method coverage across LATAM</li>
+                        <li>Platform / marketplace model supported</li>
+                    </ul>
+                    <div class="vendor-highlight bet">Key partner for betting payment processing — already serves iGaming</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tier 2 Global -->
+        <section class="section" id="tier2-acquirers" style="background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-purple">Tier 2</div>
+                    <h2 class="section-title">Global Processors with LATAM Presence</h2>
+                    <p class="section-description">Enterprise-grade processors with local acquiring licenses in select LATAM markets.</p>
+                </div>
+
+                <div class="vendor-grid">
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Adyen</div><div class="vendor-origin">Netherlands &middot; AMS: ADYEN</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local BR/MX</span><span class="vendor-tag tag-payfac">Platforms</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>LATAM:</strong> BR, MX, CO, CL, AR, PE, PA + cross-border</div>
+                        <div class="vendor-desc">Local acquiring in Brazil and Mexico. Unified commerce (online + in-store). 250+ payment methods. Highest approval rates. "Adyen for Platforms" for marketplaces.</div>
+                        <ul class="vendor-features">
+                            <li>Highest approval rates in the industry</li>
+                            <li>Card-present + card-not-present unified</li>
+                            <li>Clients: Uber, Spotify, Netflix, Rappi</li>
+                        </ul>
+                    </div>
+
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Checkout.com</div><div class="vendor-origin">London, UK &middot; $11B+ valuation</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-cross">Cross-Border</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>LATAM:</strong> MX, BR, CO, PE, CL, AR + cross-border</div>
+                        <div class="vendor-desc">Local acquiring in select markets. Intelligent routing, network tokens, Fraud Detection Pro. Competitive on pricing for high-volume.</div>
+                        <ul class="vendor-features">
+                            <li>Smart payment routing for best approval rates</li>
+                            <li>Strong in gaming / digital goods verticals</li>
+                            <li>Clients: Sony, Shein, Samsung</li>
+                        </ul>
+                    </div>
+
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">PayU (Prosus)</div><div class="vendor-origin">Netherlands &middot; Prosus/Naspers</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local CO/MX/BR</span><span class="vendor-tag tag-apm">300+ APMs</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>LATAM:</strong> CO, MX, BR, AR, CL, PE, PA</div>
+                        <div class="vendor-desc">Long-standing local entity in Colombia, Mexico, and Brazil. One of the oldest LATAM payment processors. 300+ local payment methods.</div>
+                        <ul class="vendor-features">
+                            <li>Default processor for much of Colombian e-commerce</li>
+                            <li>Marketplace model supported</li>
+                            <li>Clients: Avianca, Falabella, LATAM Airlines</li>
+                        </ul>
+                    </div>
+
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Nuvei</div><div class="vendor-origin">Montreal &middot; NASDAQ: NVEI</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-cross">Cross-Border</span><span class="vendor-tag tag-payfac">iGaming</span><span class="vendor-tag tag-crypto">Crypto</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>LATAM:</strong> MX, BR, CO, CL, PE, AR, EC + cross-border</div>
+                        <div class="vendor-desc">Strong iGaming / gambling specialization. Acquired Paymentez (Ecuador). Local acquiring, crypto payments, 40+ LATAM APMs. Wplay (Colombia) selected Nuvei.</div>
+                        <ul class="vendor-features">
+                            <li>Leading payment provider for iGaming/betting</li>
+                            <li>Acquired Paymentez (Ecuador-based processor)</li>
+                            <li>Wplay selected Nuvei for LATAM expansion</li>
+                        </ul>
+                        <div class="vendor-highlight bet">Top choice for betting/iGaming payment processing</div>
+                    </div>
+
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Stripe LATAM</div><div class="vendor-origin">San Francisco &middot; $65B+ valuation</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local MX/BR</span><span class="vendor-tag tag-payfac">Connect</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>LATAM:</strong> MX, BR, CO, CL, AR, PE (expanding)</div>
+                        <div class="vendor-desc">Best-in-class developer experience. Stripe Connect for marketplace/PayFac. Limited LATAM local acquiring vs. specialists but expanding rapidly.</div>
+                        <ul class="vendor-features">
+                            <li>Industry-best developer experience and docs</li>
+                            <li>Stripe Connect for sub-merchant/PayFac model</li>
+                            <li>Already used for Payphone U.S. architecture</li>
+                        </ul>
+                    </div>
+
+                    <div class="card vendor-card tier2">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Bamboo Payment</div><div class="vendor-origin">Uruguay &middot; Growing regional</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-payfac">PayFac</span><span class="vendor-tag tag-cross">Cross-Border</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>12 countries:</strong> UY, BR, MX, CO, CL, PE, AR, EC, CR, SV, NI, PY</div>
+                        <div class="vendor-desc">Mid-market alternative to dLocal. PayFac/aggregator model is a core feature. Lower volume requirements than larger processors.</div>
+                        <ul class="vendor-features">
+                            <li>Specifically offers PayFac/aggregator as core model</li>
+                            <li>Covers Ecuador — relevant for Payphone</li>
+                            <li>Simpler integration for mid-market companies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orchestration -->
+        <section class="section" id="orchestration">
+            <div class="section-header">
+                <div class="section-badge badge-purple">Orchestration</div>
+                <h2 class="section-title">Payment Orchestration Platforms</h2>
+                <p class="section-description">Route transactions across multiple acquirers for optimal approval rates and lowest costs per market.</p>
+            </div>
+
+            <div class="vendor-grid">
+                <div class="card vendor-card tier3">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Yuno</div><div class="vendor-origin">Bogot&aacute;, Colombia &middot; a16z-backed</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-orch">Orchestration</span><span class="vendor-tag tag-payfac">300+ Methods</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>25+ countries</strong> via connected acquirers (dLocal, Kushki, Adyen, Mercado Pago, etc.)</div>
+                    <div class="vendor-desc">Aggregates 300+ payment methods and multiple acquirers through a single API. Smart routing, failover logic, fraud management. Not a direct acquirer — an orchestration layer.</div>
+                    <ul class="vendor-features">
+                        <li>Route to best acquirer per transaction</li>
+                        <li>Backed by Tiger Global, Kaszek, a16z</li>
+                        <li>Clients: Rappi, InDrive, Yolo Group</li>
+                    </ul>
+                    <div class="vendor-highlight">Best orchestration option — route intelligently across all your acquirers</div>
+                </div>
+
+                <div class="card vendor-card tier3">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Spreedly</div><div class="vendor-origin">USA &middot; Gateway-agnostic vault</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-orch">Orchestration</span><span class="vendor-tag tag-apm">100+ Gateways</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Global</strong> — connects to all major LATAM processors</div>
+                    <div class="vendor-desc">Payment orchestration middleware. Gateway/acquirer agnostic vault and tokenization. Smart routing, failover, PCI scope reduction.</div>
+                    <ul class="vendor-features">
+                        <li>Manage multiple acquirer relationships via one API</li>
+                        <li>Processor-agnostic tokenization vault</li>
+                        <li>Clients: DoorDash, Deliveroo</li>
+                    </ul>
+                </div>
+
+                <div class="card vendor-card tier3">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Primer</div><div class="vendor-origin">London, UK &middot; ICONIQ-backed</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-orch">Orchestration</span><span class="vendor-tag tag-apm">No-Code</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Global</strong> — connects to dLocal, Kushki, EBANX, Adyen, etc.</div>
+                    <div class="vendor-desc">Payment orchestration with no-code workflow automation. Universal Checkout (drop-in UI), smart routing, observability/analytics.</div>
+                    <ul class="vendor-features">
+                        <li>No-code workflow automation for routing rules</li>
+                        <li>Universal Checkout UI component</li>
+                        <li>Clients: Carvana, Printify</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Local Acquirers -->
+        <section class="section" id="local-acquirers" style="background: linear-gradient(180deg, #f8fafc 0%, #fff7ed 0%, #f8fafc 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-orange">Local Acquirers</div>
+                    <h2 class="section-title">Key Local Acquirers by Country</h2>
+                    <p class="section-description">Dominant local acquirers in each market — essential for the lowest interchange rates and highest approval.</p>
+                </div>
+
+                <div class="vendor-grid">
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Credibanco + Redeban</div><div class="vendor-origin">Colombia &middot; Duopoly</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia</strong> — the two dominant acquirers</div>
+                        <div class="vendor-desc">Credibanco processes Visa, Redeban processes Mastercard (both now multi-brand). Essential for any serious Colombia expansion. Card-present + card-not-present.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Wompi (Bancolombia)</div><div class="vendor-origin">Colombia &middot; Bancolombia-backed</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-payfac">Marketplace</span><span class="vendor-tag tag-apm">Nequi</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia</strong> (expanding)</div>
+                        <div class="vendor-desc">Developer-friendly alternative backed by Colombia's largest bank. Cards, PSE, Nequi wallet, cash (Efecty, Baloto), QR. Aggregator/marketplace model. Colombia's answer to Stripe.</div>
+                        <div class="vendor-highlight">Best developer-friendly option for Colombia entry</div>
+                    </div>
+
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Conekta</div><div class="vendor-origin">Mexico &middot; Femsa/Kaszek-backed</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-apm">OXXO</span><span class="vendor-tag tag-payfac">Marketplace</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Mexico</strong> (primary), expanding CO, BR</div>
+                        <div class="vendor-desc">Leading independent Mexico processor. OXXO cash, SPEI bank transfers, installments (meses sin intereses), anti-fraud, recurring. Marketplace split payments supported.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Cielo + Stone + Rede</div><div class="vendor-origin">Brazil &middot; Big 3 Acquirers</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS</span><span class="vendor-tag tag-apm">PIX</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Brazil</strong></div>
+                        <div class="vendor-desc">Cielo (B3: CIEL3) = largest by volume. Stone (NASDAQ: STNE) = SMB-focused, best tech. Rede (Itau) = banking distribution. All support PIX, sub-acquirer models. Essential for Brazil card-present.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Niubiz (ex-VisaNet Peru)</div><div class="vendor-origin">Peru &middot; Visa/local banks</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Peru</strong> (expanding EC, CO)</div>
+                        <div class="vendor-desc">Dominant acquirer in Peru — processes majority of card transactions. Card-present (POS), e-commerce gateway, QR, installments. Critical partner for Peru entry.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-regional">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Getnet (PagoNxt/Santander)</div><div class="vendor-origin">Santander Group</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-local">Local</span><span class="vendor-tag tag-pos">POS</span><span class="vendor-tag tag-payfac">Platform</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>BR, MX, AR, CL, UY</strong></div>
+                        <div class="vendor-desc">Backed by Santander's banking infrastructure. Local acquiring in 5 LATAM markets. Growing aggressively (3rd/4th largest in Brazil). Banking backing = local licensing advantages.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Acquiring Strategy -->
+        <section class="section" id="acquiring-strategy">
+            <div class="section-header">
+                <div class="section-badge badge-blue">Strategy</div>
+                <h2 class="section-title">Recommended Acquiring Strategy</h2>
+            </div>
+
+            <div class="strategy-box">
+                <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Three-Layer Approach</h3>
+                <p style="opacity: 0.7; font-size: 0.95rem;">Combine cross-border, local, and orchestration for maximum coverage and best economics.</p>
+
+                <div class="strategy-grid">
+                    <div class="strategy-item">
+                        <h4 style="color: #22d3ee;">Layer 1: Cross-Border Base</h4>
+                        <p>Single API integration for all LATAM countries. Start processing immediately.</p>
+                        <ul>
+                            <li>dLocal or Kushki as primary cross-border acquirer</li>
+                            <li>Covers 15+ countries from day one</li>
+                            <li>Includes 600+ APMs automatically</li>
+                            <li>Higher rates but fastest time-to-market</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-item">
+                        <h4 style="color: var(--secondary);">Layer 2: Local Acquiring</h4>
+                        <p>Add local acquirers in priority markets for lower interchange and better approval.</p>
+                        <ul>
+                            <li>Colombia: Wompi or Credibanco/Redeban</li>
+                            <li>Mexico: Conekta or Openpay</li>
+                            <li>Brazil: Stone or Cielo</li>
+                            <li>Peru: Niubiz</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-item">
+                        <h4 style="color: #fbbf24;">Layer 3: Orchestration</h4>
+                        <p>Add Yuno or Spreedly to route intelligently across all acquirers.</p>
+                        <ul>
+                            <li>Smart routing per transaction type</li>
+                            <li>Automatic failover if one acquirer declines</li>
+                            <li>A/B test acquirers for best approval rates</li>
+                            <li>Unified reporting across all providers</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-item">
+                        <h4 style="color: #f87171;">Betting-Specific</h4>
+                        <p>For iGaming/betting payment processing, add specialized providers.</p>
+                        <ul>
+                            <li>Nuvei — leading iGaming payment provider</li>
+                            <li>PayRetailers — LATAM iGaming specialist</li>
+                            <li>PIX integration critical for Brazil betting</li>
+                            <li>Crypto payment support for offshore books</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- BETTING & iGAMING SECTION                 -->
+        <!-- ========================================= -->
+
+        <section style="background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #991b1b 100%); padding: 3rem 2rem; max-width: 100%;">
+            <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
+                <div class="section-badge" style="background: rgba(255,255,255,0.1); color: white;">Betting & iGaming</div>
+                <h2 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">Betting Companies — API Payment Partners</h2>
+                <p style="color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 700px; margin: 0 auto;">LATAM iGaming is a $6B+ market growing at 18.4% CAGR. These companies need payment processing via API — Payphone can be their processor.</p>
+            </div>
+        </section>
+
+        <!-- Regulatory Map -->
+        <section class="section" id="betting-regulatory">
+            <div class="section-header">
+                <div class="section-badge badge-red">Regulatory</div>
+                <h2 class="section-title">LATAM Betting Regulatory Map</h2>
+                <p class="section-description">Which countries have regulated online betting markets and what that means for payment processing partnerships.</p>
+            </div>
+
+            <table class="country-table">
+                <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th>Status</th>
+                        <th>Regulator</th>
+                        <th>Licensed Operators</th>
+                        <th>Key Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Brazil</strong></td>
+                        <td><span class="status-dot regulated"></span>Regulated (Jan 2025)</td>
+                        <td>SPA (Min. Finance)</td>
+                        <td>78 operators, 138 brands</td>
+                        <td>World's largest new regulated market. 100M+ players. PIX = 97% of bets. License fee BR$30M.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Colombia</strong></td>
+                        <td><span class="status-dot regulated"></span>Regulated (2016)</td>
+                        <td>Coljuegos</td>
+                        <td>14+ licensed operators</td>
+                        <td>LATAM's most mature market. First to regulate. PSE + local methods critical.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mexico</strong></td>
+                        <td><span class="status-dot regulated"></span>Regulated</td>
+                        <td>SEGOB / DGJS</td>
+                        <td>Multiple SEGOB licenses</td>
+                        <td>$10B annual turnover. 80M user base. OXXO cash deposits for betting important.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Peru</strong></td>
+                        <td><span class="status-dot regulated"></span>Regulated</td>
+                        <td>MINCETUR</td>
+                        <td>60 operators, 120 licenses</td>
+                        <td>Growing 12.54% CAGR. PagoEfectivo + local bank transfers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Argentina</strong></td>
+                        <td><span class="status-dot partial"></span>Province-level</td>
+                        <td>LOTBA, IPLyC, provincial</td>
+                        <td>Varies by province</td>
+                        <td>~$2.5-3.4B annual. 8M players. Buenos Aires City + Province = biggest markets.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Panama</strong></td>
+                        <td><span class="status-dot regulated"></span>Regulated</td>
+                        <td>JCJ</td>
+                        <td>Multiple licensed</td>
+                        <td>Full casino + sports betting. License ~$50K.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chile</strong></td>
+                        <td><span class="status-dot pending"></span>Pending</td>
+                        <td>Proposed: Supt. Casinos</td>
+                        <td>Not yet licensed</td>
+                        <td>Bill approved by Senate Aug 2025. Licensing regime coming.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dominican Republic</strong></td>
+                        <td><span class="status-dot partial"></span>Strengthening</td>
+                        <td>DGJA (proposed)</td>
+                        <td>Emerging</td>
+                        <td>Resolution 136-2024 created online framework. Casino $346K, sports $260K license.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Market Size -->
+        <section class="section" id="betting-market" style="background: linear-gradient(180deg, #f8fafc 0%, #fef2f2 0%, #f8fafc 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-red">Market Size</div>
+                    <h2 class="section-title">LATAM Betting Market Size</h2>
+                </div>
+
+                <div class="market-grid">
+                    <div class="card market-card">
+                        <span class="market-num" style="color: var(--secondary);">$6B+</span>
+                        <span class="market-label">Total LATAM iGaming GGR (2025)</span>
+                        <span class="market-sub">Projected $10B by 2028 at 18.4% CAGR</span>
+                    </div>
+                    <div class="card market-card">
+                        <span class="market-num" style="color: var(--betting);">$5.6-7B</span>
+                        <span class="market-label">Brazil GGR Alone</span>
+                        <span class="market-sub">100M+ active players &middot; 78 licensed operators</span>
+                    </div>
+                    <div class="card market-card">
+                        <span class="market-num" style="color: var(--accent);">$10B</span>
+                        <span class="market-label">Mexico Annual Turnover</span>
+                        <span class="market-sub">80M user base &middot; 56% sportsbook</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- International Sportsbooks -->
+        <section class="section" id="international-books">
+            <div class="section-header">
+                <div class="section-badge badge-red">International</div>
+                <h2 class="section-title">International Sportsbooks in LATAM</h2>
+                <p class="section-description">Major global operators with licensed LATAM operations — high-volume API payment processing opportunities.</p>
+            </div>
+
+            <div class="vendor-grid">
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Bet365</div><div class="vendor-origin">UK &middot; Flutter Entertainment</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Brazil (SPA), Mexico (SEGOB), Argentina (BAC+BAP), Colombia (Coljuegos), Peru (MINCETUR)</div>
+                    <div class="vendor-desc">Global top-3 sportsbook. 3rd largest in LATAM by traffic (~10.5M monthly visits). Robust API and multiple payment integrations including PIX, local cards, e-wallets.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Betsson Group</div><div class="vendor-origin">Sweden &middot; Betsson AB (public)</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Argentina, Brazil, Colombia (Colbet), Mexico, Peru</div>
+                    <div class="vendor-desc">LATAM = 26% of total revenue. Q2 2025 LATAM revenue EUR 84.7M (+35.4% YoY). Bogot&aacute; operations center. Leader in Argentina and Peru.</div>
+                    <div class="vendor-highlight bet">Fastest-growing international operator in LATAM — 35% YoY</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Betano (Kaizen Gaming)</div><div class="vendor-origin">Greece &middot; Kaizen Gaming S.A.</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Brazil (first to get license), Mexico, Colombia, Argentina, Chile, Peru, Ecuador</div>
+                    <div class="vendor-desc">2nd in LATAM by traffic (~10.9M monthly). First operator to receive Brazilian SPA license. Sponsor of Brazilian Football Confederation. Targeting 26 markets by 2026.</div>
+                    <div class="vendor-highlight bet">Present in Ecuador — immediate partnership opportunity</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">1xBet</div><div class="vendor-origin">Cyprus &middot; Global operator</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-esports">Esports</span><span class="vendor-tag tag-crypto">Crypto</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Mexico (DGJS), Brazil (SPA), Colombia, Argentina, Chile, Peru</div>
+                    <div class="vendor-desc">One of the world's largest by volume. Extensive localized payment methods including crypto, PIX, local bank transfers. Aggressive LATAM expansion.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Codere Online</div><div class="vendor-origin">Spain &middot; NASDAQ: CDRO</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Mexico (SEGOB), Colombia (Coljuegos), Argentina (LOTBA), Panama</div>
+                    <div class="vendor-desc">2025 NGR EUR 230M+. Mexico drives ~60% of LATAM revenue. Publicly traded on Nasdaq. Established in-market presence across key LATAM territories.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Stake.com</div><div class="vendor-origin">Australia &middot; Crypto-native</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-crypto">Crypto</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Colombia (acquired Betfair Coljuegos license), Peru (Stake.pe)</div>
+                    <div class="vendor-desc">One of the world's largest crypto betting platforms. Supports BTC, ETH, USDT plus local methods. Rapidly expanding LATAM footprint. Brazil license pending.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Betway</div><div class="vendor-origin">UK &middot; Super Group</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Mexico (SEGOB), Colombia (Coljuegos), Brazil (applied), Peru, Argentina</div>
+                    <div class="vendor-desc">Strong brand recognition. Well-established payment infrastructure supporting local methods across LATAM markets.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Superbet</div><div class="vendor-origin">Romania &middot; Major European operator</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Licensed in:</strong> Brazil (definitive SPA license)</div>
+                    <div class="vendor-desc">Major European operator with definitive Brazilian license. Modern tech stack with GeoLocs partnership for geolocation compliance. Brazil is key growth market.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Pinnacle</div><div class="vendor-origin">Cura&ccedil;ao &middot; Sharp bettors</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-crypto">Crypto</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Operating in:</strong> Brazil, Mexico, Peru, Colombia</div>
+                    <div class="vendor-desc">Niche player focused on professional/high-volume bettors. API-first approach with B2B API offerings. Known for best odds and no bet limits.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LATAM-Native Books -->
+        <section class="section" id="latam-books" style="background: linear-gradient(180deg, #f8fafc 0%, #fef2f2 0%, #f8fafc 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-red">LATAM-Native</div>
+                    <h2 class="section-title">LATAM-Born Betting Platforms</h2>
+                    <p class="section-description">Regional operators with deep local market knowledge — often higher partnership potential than international books.</p>
+                </div>
+
+                <div class="vendor-grid">
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Caliente</div><div class="vendor-origin">Tijuana, Mexico &middot; #1 LATAM traffic</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Licensed</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>9+ countries:</strong> MX, BR, EC, PA, PY, PE, UY, VE, AR</div>
+                        <div class="vendor-desc">#1 in LATAM by traffic (44.15M monthly visits). 47.5% brand recognition in Mexico. 200+ retail outlets. Partnered with IGT PlaySports for 142+ sportsbook venues.</div>
+                        <div class="vendor-highlight bet">Largest LATAM operator — operates in Ecuador already</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Betcris</div><div class="vendor-origin">Costa Rica &middot; Since 1985</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">MGA</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>15+ countries:</strong> CR, MX, PE, SV, HN, EC, NI, PA, JM, DO, GT, AR, CO, UY, BR</div>
+                        <div class="vendor-desc">Oldest LATAM-focused operator (est. 1985). 30% market share in Mexico. 100+ walk-in shops plus full online. MGA licensed. Present in Ecuador.</div>
+                        <div class="vendor-highlight bet">Operates in Ecuador — 15+ LATAM countries — immediate target</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">BetPlay</div><div class="vendor-origin">Bogot&aacute;, Colombia &middot; #1 Colombia</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Coljuegos</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia</strong></div>
+                        <div class="vendor-desc">51.43% market share — #1 in Colombia. Massive brand presence via football sponsorships. Integrated platform with local payment methods (PSE, Nequi, Efecty).</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Wplay</div><div class="vendor-origin">Medell&iacute;n, Colombia &middot; ~50% share</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Coljuegos</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia</strong> (expanding LATAM)</div>
+                        <div class="vendor-desc">First Coljuegos-licensed operator. ~50% market share. 1.6M+ users. Selected Nuvei for LATAM expansion. Altenar-powered sportsbook platform.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Apuesta Total (Cirsa)</div><div class="vendor-origin">Lima, Peru &middot; 70% Cirsa/Blackstone</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">MINCETUR</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Peru</strong></div>
+                        <div class="vendor-desc">Peru's largest sportsbook (25-30% market share). ~500 retail locations + full online. MINCETUR licensed since 2016. Acquired by Cirsa (Blackstone) in 2024.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">BetWarrior</div><div class="vendor-origin">Buenos Aires &middot; Argentina leader</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Multi-province</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Argentina</strong> (BA City, BA Province, Mendoza, La Rioja, Chubut) &mdash; expanding BR, PE</div>
+                        <div class="vendor-desc">Major Argentine operator. Licensed in multiple provinces. Sponsor of Argentina National Football Team. Modern platform with local integrations. Expanding to Brazil and Peru.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Betnacional</div><div class="vendor-origin">Brazil &middot; Domestic leader</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">SPA</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Brazil</strong></div>
+                        <div class="vendor-desc">One of Brazil's leading domestic operators. Definitive SPA license holder. PIX-first payment approach (97% of Brazil betting transactions use PIX).</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">RushBet (RSI)</div><div class="vendor-origin">Chicago/Bogot&aacute; &middot; RSI (public)</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Coljuegos</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia, Mexico</strong></div>
+                        <div class="vendor-desc">Rush Street Interactive's LATAM brand. US-grade tech platform with robust API. Competitive in Colombian live betting. Leveraging U.S. operational experience in LATAM.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Rivalo + Zamba + YaJuego</div><div class="vendor-origin">Colombia operators</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">Coljuegos</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Colombia</strong> (Rivalo also BR, PE, CL)</div>
+                        <div class="vendor-desc">Additional Coljuegos-licensed operators. Rivalo expanding beyond Colombia. All require localized payment processing with PSE, Nequi, Efecty, and bank transfers.</div>
+                    </div>
+
+                    <div class="card vendor-card tier-bet">
+                        <div class="vendor-top">
+                            <div><div class="vendor-name">Strendus + Ganabet</div><div class="vendor-origin">Mexico operators</div></div>
+                            <div class="vendor-tags"><span class="vendor-tag tag-sports">Sports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-licensed">SEGOB</span></div>
+                        </div>
+                        <div class="vendor-countries"><strong>Mexico</strong></div>
+                        <div class="vendor-desc">Mexican SEGOB-licensed operators. Need localized payment solutions supporting OXXO cash deposits, SPEI transfers, and local card processing.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Esports & Fantasy -->
+        <section class="section" id="esports-fantasy">
+            <div class="section-header">
+                <div class="section-badge" style="background: rgba(8,145,178,0.1); color: var(--acquiring);">Esports & Fantasy</div>
+                <h2 class="section-title">Esports Betting & Fantasy Sports</h2>
+                <p class="section-description">Emerging verticals with high growth potential and less competition from established payment providers.</p>
+            </div>
+
+            <div class="vendor-grid">
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Rivalry</div><div class="vendor-origin">Toronto, Canada &middot; TSX Venture</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-esports">Esports</span><span class="vendor-tag tag-sports">Sports</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Brazil</strong> (strong presence) + broader LATAM</div>
+                    <div class="vendor-desc">One of the most popular esports betting brands in Brazil and LATAM. Modern platform targeting Gen Z/millennial demographics. Strong social media presence. CS2, Dota 2, LoL, Valorant.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Thunderpick</div><div class="vendor-origin">Cura&ccedil;ao &middot; Crypto-native</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-esports">Esports</span><span class="vendor-tag tag-casino">Casino</span><span class="vendor-tag tag-crypto">Crypto</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Available across LATAM</strong></div>
+                    <div class="vendor-desc">Leading esports-focused crypto betting platform. BTC, ETH, USDT. Partnered with Oddin.gg for esports data. Strong in CS2, Dota 2, and League of Legends betting markets.</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Draftea</div><div class="vendor-origin">Mexico City &middot; Sequoia/Kaszek</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-dfs">Fantasy</span><span class="vendor-tag tag-sports">Sports</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Mexico</strong> (expanding CO, CL, AR, PE)</div>
+                    <div class="vendor-desc">First DFS platform in the Spanish-speaking world. Official NFL/NFLPA partner for LATAM. $37.2M funding (Sequoia, Kaszek, FanDuel founder). Modern mobile-first platform.</div>
+                    <div class="vendor-highlight bet">First-mover in Spanish-speaking DFS — expanding across LATAM</div>
+                </div>
+
+                <div class="card vendor-card tier-bet">
+                    <div class="vendor-top">
+                        <div><div class="vendor-name">Oddin.gg + InPlaySoft</div><div class="vendor-origin">Europe/LATAM &middot; B2B Infrastructure</div></div>
+                        <div class="vendor-tags"><span class="vendor-tag tag-esports">Esports B2B</span><span class="vendor-tag tag-apm">API</span></div>
+                    </div>
+                    <div class="vendor-countries"><strong>Brazil</strong> + broader LATAM</div>
+                    <div class="vendor-desc">B2B esports betting infrastructure provider. Pure API provider for esports odds and data. Enables operators to add esports betting. Powers multiple LATAM operators.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Betting Partnership Strategy -->
+        <section class="section" id="betting-strategy" style="background: linear-gradient(180deg, #f8fafc 0%, #fef2f2 0%, #f8fafc 100%); max-width: 100%; padding: 3rem 2rem;">
+            <div style="max-width: 1400px; margin: 0 auto;">
+                <div class="section-header">
+                    <div class="section-badge badge-red">Strategy</div>
+                    <h2 class="section-title">Betting Partnership Strategy</h2>
+                    <p class="section-description">How Payphone can position as a payment processor for LATAM betting companies.</p>
+                </div>
+
+                <div class="strategy-box" style="background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);">
+                    <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Payment Processing for Betting — The Opportunity</h3>
+                    <p style="opacity: 0.7; font-size: 0.95rem;">Betting operators need local payment processing in each LATAM market. Payphone can be the payment API that connects them to local methods.</p>
+
+                    <div class="strategy-grid">
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">Priority 1: Brazil</h4>
+                            <p>$5.6-7B GGR. 78 licensed operators. PIX = 97% of bets.</p>
+                            <ul>
+                                <li>Bet365, Betsson, Betano, 1xBet, Superbet, Betnacional</li>
+                                <li>PIX integration is non-negotiable</li>
+                                <li>Also need Boleto, local cards, bank transfers</li>
+                                <li>Partner: Stone, Cielo, or PagBrasil for local acquiring</li>
+                            </ul>
+                        </div>
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">Priority 2: Colombia</h4>
+                            <p>$500M+ GGR. 14 licensed operators. Most mature market.</p>
+                            <ul>
+                                <li>BetPlay, Wplay, RushBet, Rivalo, Zamba, YaJuego</li>
+                                <li>PSE (bank transfer) is critical</li>
+                                <li>Nequi, Daviplata wallets growing fast</li>
+                                <li>Partner: Wompi or Credibanco/Redeban</li>
+                            </ul>
+                        </div>
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">Priority 3: Mexico</h4>
+                            <p>$10B turnover. Caliente dominates. Strong retail betting.</p>
+                            <ul>
+                                <li>Caliente, Codere, Betcris, 1xBet, Strendus, Ganabet</li>
+                                <li>OXXO cash deposits critical for deposits</li>
+                                <li>SPEI/CoDi for instant bank transfers</li>
+                                <li>Partner: Conekta or Openpay for local</li>
+                            </ul>
+                        </div>
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">Ecuador Opportunity</h4>
+                            <p>Online largely unregulated. Caliente, Betcris, Betano already present.</p>
+                            <ul>
+                                <li>Payphone already processes payments in Ecuador</li>
+                                <li>Natural advantage for Ecuador-based operators</li>
+                                <li>Caliente, Betcris, Betano = immediate targets</li>
+                                <li>First-mover advantage before regulation</li>
+                            </ul>
+                        </div>
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">API Integration Model</h4>
+                            <p>How Payphone connects to betting operators.</p>
+                            <ul>
+                                <li>RESTful payment API for deposits + withdrawals</li>
+                                <li>Local card acquiring per country</li>
+                                <li>Cash deposit networks (OXXO, Efecty, retail)</li>
+                                <li>Bank transfer methods (PSE, PIX, SPEI)</li>
+                                <li>E-wallet integrations (Nequi, Yape, Mercado Pago)</li>
+                                <li>Real-time webhooks for payment status</li>
+                            </ul>
+                        </div>
+                        <div class="strategy-item">
+                            <h4 style="color: #fca5a5;">Key Differentiators</h4>
+                            <p>What makes Payphone unique as a betting processor.</p>
+                            <ul>
+                                <li>Already has payment infrastructure in Ecuador</li>
+                                <li>Super-app model = users already onboarded</li>
+                                <li>Can offer deposit via Payphone wallet balance</li>
+                                <li>Payphone card for instant betting withdrawals</li>
+                                <li>Bilingual (ES/EN) — native LATAM company</li>
+                                <li>Can bundle acquiring + wallet + card for operators</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Payphone LATAM Expansion — Merchant Acquiring & Betting Partnerships</p>
+            <p style="margin-top: 0.5rem; opacity: 0.5; font-size: 0.8rem;">Standalone Document &middot; Confidential &middot; 37+ Acquirers &middot; 35+ Betting Companies</p>
+        </footer>
+    </div><!-- End Main Content -->
+    </div><!-- end content-wrapper -->
+
+    <script>
+        const correctPassword = 'payphone2026';
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const passwordScreen = document.getElementById('passwordScreen');
+        const contentWrapper = document.getElementById('contentWrapper');
+
+        if (sessionStorage.getItem('payphone_latam_authenticated') === 'true') {
+            passwordScreen.classList.add('hidden');
+            contentWrapper.classList.add('unlocked');
+        }
+
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (passwordInput.value === correctPassword) {
+                sessionStorage.setItem('payphone_latam_authenticated', 'true');
+                passwordScreen.classList.add('hidden');
+                contentWrapper.classList.add('unlocked');
+            } else {
+                passwordInput.classList.add('error');
+                errorMsg.classList.add('show');
+                setTimeout(() => { passwordInput.classList.remove('error'); }, 500);
+            }
+        });
+        passwordInput.addEventListener('input', function() { errorMsg.classList.remove('show'); });
+
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        sidebarToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); sidebarOverlay.classList.toggle('open'); });
+        sidebarOverlay.addEventListener('click', () => { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('open'); });
+
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('.sidebar-nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                if (window.innerWidth <= 1024) { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('open'); }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section, section');
+            let current = '';
+            sections.forEach(section => { if (section.id && scrollY >= section.offsetTop - 200) current = section.id; });
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
